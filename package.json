@@ -1,0 +1,22 @@
+{
+  "name": "react-paintapp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "pusher": "^2.0.0",
+    "pusher-js": "^4.2.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4",
+    "uuid": "^3.2.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
