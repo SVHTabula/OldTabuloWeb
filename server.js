@@ -29,6 +29,9 @@ io.on('connection', (socket) => {
     console.log(data);
     socket.broadcast.emit('draw', data);
   });
+  socket.on('colorChange', function(data) { 
+    socket.broadcast.emit('newColor', data);
+  })
 });
 
 const port = process.env.PORT || 4000;

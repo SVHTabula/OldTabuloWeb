@@ -73,6 +73,7 @@ export default function DrawingCanvas() {
 
   function handleColorChange(event) {
     userStrokeStyleRef.current = event.target.value;
+    socket.emit("colorChange", event.target.value);
   }
 
   return (
