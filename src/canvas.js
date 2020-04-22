@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
-import io from 'socket.io-client';
+import { CompactPicker as SketchPicker } from "react-color";
+import io from "socket.io-client";
 
-const userStrokeStyle = "#EE92C2";
 const guestStrokeStyle = "#F0C987";
 const line = [];
 const userId = v4();
@@ -10,7 +10,8 @@ const socket = io(process.env.SERVER_URL);
 
 export default function DrawingCanvas() {
   const [isPainting, setIsPainting] = useState(false);
-  const [prevPos, setPrevPos] = useState({ offsetX: 0, offsetY: 0});
+  const [userStrokeStyle, setUserStrokeStyle] = useState("#EE92C2");
+  const [prevPos, setPrevPos] = useState({ offsetX: 0, offsetY: 0 });
   const canvas = useRef(null);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function DrawingCanvas() {
   function endPaintEvent() {
     if (isPainting) {
       setIsPainting(false);
-      socket.emit('paint', { line, userId });
+      socket.emit("paint", { line, userId });
       line.splice(0, line.length);
     }
   }
@@ -61,7 +62,7 @@ export default function DrawingCanvas() {
   function paint(prevPos, currPos, strokeStyle) {
     const { offsetX, offsetY } = currPos;
     const { offsetX: x, offsetY: y } = prevPos;
-    const ctx = canvas.current.getContext('2d');
+    const ctx = canvas.current.getContext("2d");
     ctx.beginPath();
     ctx.strokeStyle = strokeStyle;
     ctx.moveTo(x, y);
@@ -70,30 +71,53 @@ export default function DrawingCanvas() {
     setPrevPos({ offsetX, offsetY });
   }
 
+  function handleColorChange(event) {
+    setUserStrokeStyle(event.target.value);
+  }
+
   return (
     <div>
-      <button
-        onClick={() => {
-          canvas.current.getContext('2d').lineWidth -= 10;
-        }}
-      >
-        -
-      </button>
-      <button
-        onClick={() => {
-          canvas.current.getContext('2d').lineWidth += 10;
-        }}
-      >
-        +
-      </button>
-      <canvas
-        ref={canvas}
-        style={{ background: "black" }}
-        onMouseDown={onMouseDown}
-        onMouseLeave={endPaintEvent}
-        onMouseUp={endPaintEvent}
-        onMouseMove={onMouseMove}
-      />
+      <div>
+        <button
+          onClick={() => {
+            canvas.current.getContext("2d").lineWidth -= 10;
+          }}
+        >
+          -
+        </button>
+        <button
+          onClick={() => {
+            canvas.current.getContext("2d").lineWidth += 10;
+          }}
+        >
+          +
+        </button>
+      </div>
+      <textarea onChange={handleColorChange}></textarea>
+      <div>
+        <button onClick={() => setUserStrokeStyle("#ffffff")}>White</button>
+        <button onClick={() => setUserStrokeStyle("#000000")}>Black</button>
+        <button onClick={() => setUserStrokeStyle("#ff0000")}>Red</button>
+        <button onClick={() => setUserStrokeStyle("#00ff00")}>Green</button>
+        <button onClick={() => setUserStrokeStyle("#0000ff")}>Blue</button>
+        <button onClick={() => setUserStrokeStyle("#ffff00")}>Yellow</button>
+        <button onClick={() => setUserStrokeStyle("#ff6600")}>Orange</button>
+        <button onClick={() => setUserStrokeStyle("#110011")}>Purple</button>
+        <SketchPicker
+          color={userStrokeStyle}
+          onChangeComplete={(e) => setUserStrokeStyle(e.hex)}
+        />
+      </div>
+      <div>
+        <canvas
+          ref={canvas}
+          style={{ background: "black" }}
+          onMouseDown={onMouseDown}
+          onMouseLeave={endPaintEvent}
+          onMouseUp={endPaintEvent}
+          onMouseMove={onMouseMove}
+        />
+      </div>
     </div>
   );
 }
