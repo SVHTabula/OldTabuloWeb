@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 
-import SocketContext from '../contexts/socket';
+import SocketContext from "../contexts/socket";
 import UserContext from "../contexts/user";
 import CanvasContext from "../contexts/canvas";
 
@@ -24,7 +24,18 @@ export default function DrawingCanvas() {
     ctx.moveTo(x, y);
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
+
     prevPosRef.current = { offsetX, offsetY };
+  }
+
+  function loadImage(url) {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.src = url;
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+    };
   }
 
   useEffect(() => {
@@ -44,18 +55,20 @@ export default function DrawingCanvas() {
     canvas.height = 800;
     const ctx = canvas.getContext("2d");
 
+    //loadImage("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fkimcampion.com%2Fwp-content%2Fuploads%2F2015%2F06%2Fwild_lion-1600x1200.jpg");
+
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
     ctx.strokeStyle = lineColorRef.current;
     ctx.lineWidth = lineWidthRef.current;
 
-    canvas.onmousedown = function(nativeEvent) {
+    canvas.onmousedown = function (nativeEvent) {
       const { offsetX, offsetY } = nativeEvent;
       isPaintingRef.current = true;
       prevPosRef.current = { offsetX, offsetY };
     };
 
-    canvas.onmousemove = function(nativeEvent) {
+    canvas.onmousemove = function (nativeEvent) {
       if (isPaintingRef.current) {
         const { offsetX, offsetY } = nativeEvent;
         const offSetData = { offsetX, offsetY };
@@ -68,7 +81,7 @@ export default function DrawingCanvas() {
       }
     };
 
-    canvas.onmouseup = canvas.onmouseleave = function() {
+    canvas.onmouseup = canvas.onmouseleave = function () {
       if (isPaintingRef.current) {
         isPaintingRef.current = false;
         socket.emit("paint", { line, userId });
@@ -77,10 +90,5 @@ export default function DrawingCanvas() {
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ background: "black" }}
-    />
-  );
+  return <canvas ref={canvasRef} style={{ background: "black" }} />;
 }
