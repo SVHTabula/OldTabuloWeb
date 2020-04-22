@@ -29,12 +29,25 @@ export default function ColorPicker() {
       "load",
       function () {
         loadImage(reader.result);
+        socket.emit("updateImage", reader.result);
       },
       false
     );
     if (file) {
       reader.readAsDataURL(file);
     }
+  }
+  function saveImage() {
+    const canvas = canvasRef.current;
+    var downloadLink = document.getElementById("downloadLink");
+    downloadLink.setAttribute("download", "output.png");
+    downloadLink.setAttribute(
+      "href",
+      canvas
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream")
+    );
+    downloadLink.click();
   }
   useEffect(() => {
     lineColorRef.current = lineColor;
@@ -68,7 +81,11 @@ export default function ColorPicker() {
           onChangeComplete={(e) => setLineColor(e.hex)}
         />
       </div>
-      <input id="fileItem" type="file" onChange={() => openImage()}/>
+      <input id="fileItem" type="file" onChange={() => openImage()} />
+      <a id="downloadLink" style={{ display: "hidden" }}></a>
+      <button onClick={() => saveImage()}>
+        Save
+      </button>
     </div>
   );
 }

@@ -29,16 +29,6 @@ export default function DrawingCanvas() {
     prevPosRef.current = { offsetX, offsetY };
   }
 
-  function loadImage(url) {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    img.src = url;
-    img.onload = function () {
-      ctx.drawImage(img, 0, 0);
-    };
-  }
-
   useEffect(() => {
     socket.on("paint", (data) => {
       const { id, line } = data;
