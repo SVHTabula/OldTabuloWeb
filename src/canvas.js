@@ -26,7 +26,7 @@ export default function DrawingCanvas() {
       const { id, line } = data;
       if (id !== userId) {
         line.forEach((position) => {
-          paint(position.start, position.stop, guestStrokeStyleRef.current);
+          paint(position.start, position.stop, userStrokeStyleRef.current);
         });
       }
     });
