@@ -6,7 +6,7 @@ const userStrokeStyle = "#EE92C2";
 const guestStrokeStyle = "#F0C987";
 const line = [];
 const userId = v4();
-const socket = io('http://localhost:4000');
+const socket = io(process.env.SERVER_URL);
 
 export default function DrawingCanvas() {
   const [isPainting, setIsPainting] = useState(false);
