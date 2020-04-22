@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
-import { SketchPicker } from "react-color";
+import { CompactPicker as SketchPicker } from "react-color";
 import io from "socket.io-client";
 
 const guestStrokeStyle = "#F0C987";
