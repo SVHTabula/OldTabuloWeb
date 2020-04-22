@@ -18,7 +18,7 @@ export default function DrawingCanvas() {
     const canvas = canvasRef.current;
     canvas.width = 1000;
     canvas.height = 800;
-    const ctx = cv.getContext("2d");
+    const ctx = canvas.getContext("2d");
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
     ctx.lineWidth = 5;
