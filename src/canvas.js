@@ -29,6 +29,12 @@ export default function DrawingCanvas() {
         });
       }
     });
+    socket.on("newColor", (data) => {
+      userStrokeStyleRef.current = data;
+    });
+    socket.on("newWidth", (data) => {
+      ctx.lineWidth = data;
+    });
 
     canvas.onmousedown = function(nativeEvent) {
       const { offsetX, offsetY } = nativeEvent;
@@ -76,34 +82,30 @@ export default function DrawingCanvas() {
     socket.emit("colorChange", event);
   }
 
+  function handleLineWidth(difference) {
+    canvasRef.current.getContext("2d").lineWidth += difference;
+    socket.emit("widthChange", canvasRef.current.getContext("2d").lineWidth);
+  }
+
   return (
     <div>
       <div>
         <button
           onClick={() => {
-            canvasRef.current.getContext("2d").lineWidth -= 10;
+            handleLineWidth(-10);
           }}
         >
           -
         </button>
         <button
           onClick={() => {
-            canvasRef.current.getContext("2d").lineWidth += 10;
+            handleLineWidth(10);
           }}
         >
           +
         </button>
       </div>
-      <textarea onChange={handleColorChange}></textarea>
       <div>
-        <button onClick={() => userStrokeStyleRef.current = "#ffffff"}>White</button>
-        <button onClick={() => userStrokeStyleRef.current = "#000000"}>Black</button>
-        <button onClick={() => userStrokeStyleRef.current = "#ff0000"}>Red</button>
-        <button onClick={() => userStrokeStyleRef.current = "#00ff00"}>Green</button>
-        <button onClick={() => userStrokeStyleRef.current = "#0000ff"}>Blue</button>
-        <button onClick={() => userStrokeStyleRef.current = "#ffff00"}>Yellow</button>
-        <button onClick={() => userStrokeStyleRef.current = "#ff6600"}>Orange</button>
-        <button onClick={() => userStrokeStyleRef.current = "#110011"}>Purple</button>
         <SketchPicker
           color={userStrokeStyleRef.current}
           onChangeComplete={(e) => handleColorChange(e.hex)}
