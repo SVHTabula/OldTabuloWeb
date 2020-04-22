@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { v4 } from 'uuid';
-import Pusher from 'pusher-js';
+import React, { Component } from "react";
+import { v4 } from "uuid";
+import Pusher from "pusher-js";
 
 class Canvas extends Component {
   constructor(props) {
@@ -10,13 +10,13 @@ class Canvas extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.endPaintEvent = this.endPaintEvent.bind(this);
 
-    this.pusher = new Pusher('a1de361e8a5975db6810', {
-      cluster: 'us2',
+    this.pusher = new Pusher("a1de361e8a5975db6810", {
+      cluster: "us2",
     });
   }
   isPainting = false;
-  userStrokeStyle = '#EE92C2';
-  guestStrokeStyle = '#F0C987';
+  userStrokeStyle = "#EE92C2";
+  guestStrokeStyle = "#F0C987";
   line = [];
   userId = v4();
   prevPos = { offsetX: 0, offsetY: 0 };
@@ -65,11 +65,11 @@ class Canvas extends Component {
       userId: this.userId,
     };
 
-    await fetch('http://localhost:4000/paint', {
-      method: 'post',
+    await fetch("http://localhost:4000/paint", {
+      method: "post",
       body: JSON.stringify(body),
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     });
     // await req.json();
@@ -79,13 +79,13 @@ class Canvas extends Component {
   componentDidMount() {
     this.canvas.width = 1000;
     this.canvas.height = 800;
-    this.ctx = this.canvas.getContext('2d');
-    this.ctx.lineJoin = 'round';
-    this.ctx.lineCap = 'round';
+    this.ctx = this.canvas.getContext("2d");
+    this.ctx.lineJoin = "round";
+    this.ctx.lineCap = "round";
     this.ctx.lineWidth = 5;
 
-    const channel = this.pusher.subscribe('painting');
-    channel.bind('draw', (data) => {
+    const channel = this.pusher.subscribe("painting");
+    channel.bind("draw", (data) => {
       const { userId, line } = data;
       if (userId !== this.userId) {
         line.forEach((position) => {
@@ -97,14 +97,30 @@ class Canvas extends Component {
 
   render() {
     return (
-      <canvas
-        ref={(ref) => (this.canvas = ref)}
-        style={{ background: 'black' }}
-        onMouseDown={this.onMouseDown}
-        onMouseLeave={this.endPaintEvent}
-        onMouseUp={this.endPaintEvent}
-        onMouseMove={this.onMouseMove}
-      />
+      <div>
+        <button
+          onClick={() => {
+            this.ctx.lineWidth -= 10;
+          }}
+        >
+          -
+        </button>
+        <button
+          onClick={() => {
+            this.ctx.lineWidth += 10;
+          }}
+        >
+          +
+        </button>
+        <canvas
+          ref={(ref) => (this.canvas = ref)}
+          style={{ background: "black" }}
+          onMouseDown={this.onMouseDown}
+          onMouseLeave={this.endPaintEvent}
+          onMouseUp={this.endPaintEvent}
+          onMouseMove={this.onMouseMove}
+        />
+      </div>
     );
   }
 }
