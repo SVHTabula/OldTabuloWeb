@@ -1,128 +1,99 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
-import Pusher from "pusher-js";
+import io from 'socket.io-client';
 
-class Canvas extends Component {
-  constructor(props) {
-    super(props);
+const userStrokeStyle = "#EE92C2";
+const guestStrokeStyle = "#F0C987";
+const line = [];
+const userId = v4();
+const socket = io('http://localhost:4000');
 
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.endPaintEvent = this.endPaintEvent.bind(this);
+export default function DrawingCanvas() {
+  const [isPainting, setIsPainting] = useState(false);
+  const [prevPos, setPrevPos] = useState({ offsetX: 0, offsetY: 0});
+  const canvas = useRef(null);
 
-    this.pusher = new Pusher("a1de361e8a5975db6810", {
-      cluster: "us2",
-    });
-  }
-  isPainting = false;
-  userStrokeStyle = "#EE92C2";
-  guestStrokeStyle = "#F0C987";
-  line = [];
-  userId = v4();
-  prevPos = { offsetX: 0, offsetY: 0 };
-
-  onMouseDown({ nativeEvent }) {
-    const { offsetX, offsetY } = nativeEvent;
-    this.isPainting = true;
-    this.prevPos = { offsetX, offsetY };
-  }
-
-  onMouseMove({ nativeEvent }) {
-    if (this.isPainting) {
-      const { offsetX, offsetY } = nativeEvent;
-      const offSetData = { offsetX, offsetY };
-      this.position = {
-        start: { ...this.prevPos },
-        stop: { ...offSetData },
-      };
-      this.line = this.line.concat(this.position);
-      this.paint(this.prevPos, offSetData, this.userStrokeStyle);
-    }
-  }
-
-  endPaintEvent() {
-    if (this.isPainting) {
-      this.isPainting = false;
-      this.sendPaintData();
-    }
-  }
-
-  paint(prevPos, currPos, strokeStyle) {
-    const { offsetX, offsetY } = currPos;
-    const { offsetX: x, offsetY: y } = prevPos;
-
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = strokeStyle;
-    this.ctx.moveTo(x, y);
-    this.ctx.lineTo(offsetX, offsetY);
-    this.ctx.stroke();
-    this.prevPos = { offsetX, offsetY };
-  }
-
-  async sendPaintData() {
-    const body = {
-      line: this.line,
-      userId: this.userId,
-    };
-
-    await fetch("http://localhost:4000/paint", {
-      method: "post",
-      body: JSON.stringify(body),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    // await req.json();
-    this.line = [];
-  }
-
-  componentDidMount() {
-    this.canvas.width = 1000;
-    this.canvas.height = 800;
-    this.ctx = this.canvas.getContext("2d");
-    this.ctx.lineJoin = "round";
-    this.ctx.lineCap = "round";
-    this.ctx.lineWidth = 5;
-
-    const channel = this.pusher.subscribe("painting");
-    channel.bind("draw", (data) => {
-      const { userId, line } = data;
-      if (userId !== this.userId) {
+  useEffect(() => {
+    const cv = canvas.current;
+    cv.width = 1000;
+    cv.height = 800;
+    const ctx = cv.getContext("2d");
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.lineWidth = 5;
+    socket.on("draw", (data) => {
+      const { id, line } = data;
+      if (id !== userId) {
         line.forEach((position) => {
-          this.paint(position.start, position.stop, this.guestStrokeStyle);
+          paint(position.start, position.stop, guestStrokeStyle);
         });
       }
     });
+  }, []);
+
+  function onMouseDown({ nativeEvent }) {
+    const { offsetX, offsetY } = nativeEvent;
+    setIsPainting(true);
+    setPrevPos({ offsetX, offsetY });
   }
 
-  render() {
-    return (
-      <div>
-        <button
-          onClick={() => {
-            this.ctx.lineWidth -= 10;
-          }}
-        >
-          -
-        </button>
-        <button
-          onClick={() => {
-            this.ctx.lineWidth += 10;
-          }}
-        >
-          +
-        </button>
-        <canvas
-          ref={(ref) => (this.canvas = ref)}
-          style={{ background: "black" }}
-          onMouseDown={this.onMouseDown}
-          onMouseLeave={this.endPaintEvent}
-          onMouseUp={this.endPaintEvent}
-          onMouseMove={this.onMouseMove}
-        />
-      </div>
-    );
+  function onMouseMove({ nativeEvent }) {
+    if (isPainting) {
+      const { offsetX, offsetY } = nativeEvent;
+      const offSetData = { offsetX, offsetY };
+      const position = {
+        start: { ...prevPos },
+        stop: { ...offSetData },
+      };
+      line.push.apply(position);
+      paint(prevPos, offSetData, userStrokeStyle);
+    }
   }
+
+  function endPaintEvent() {
+    if (isPainting) {
+      setIsPainting(false);
+      socket.emit('paint', { line, userId });
+      line.splice(0, line.length);
+    }
+  }
+
+  function paint(prevPos, currPos, strokeStyle) {
+    const { offsetX, offsetY } = currPos;
+    const { offsetX: x, offsetY: y } = prevPos;
+    const ctx = canvas.current.getContext('2d');
+    ctx.beginPath();
+    ctx.strokeStyle = strokeStyle;
+    ctx.moveTo(x, y);
+    ctx.lineTo(offsetX, offsetY);
+    ctx.stroke();
+    setPrevPos({ offsetX, offsetY });
+  }
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          canvas.current.getContext('2d').lineWidth -= 10;
+        }}
+      >
+        -
+      </button>
+      <button
+        onClick={() => {
+          canvas.current.getContext('2d').lineWidth += 10;
+        }}
+      >
+        +
+      </button>
+      <canvas
+        ref={canvas}
+        style={{ background: "black" }}
+        onMouseDown={onMouseDown}
+        onMouseLeave={endPaintEvent}
+        onMouseUp={endPaintEvent}
+        onMouseMove={onMouseMove}
+      />
+    </div>
+  );
 }
-
-export default Canvas;
