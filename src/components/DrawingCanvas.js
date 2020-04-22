@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
+import PhoneOutline from './PhoneOutline';
 
 import SocketContext from '../contexts/socket';
 import UserContext from "../contexts/user";
@@ -78,9 +79,13 @@ export default function DrawingCanvas() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ background: "black" }}
-    />
+    <div style={{
+      position: 'relative',
+      height: '60vh',
+      width: '60vw'
+    }}>
+      <canvas ref={canvasRef} id="drawingCanvas" />
+      <PhoneOutline />
+    </div>
   );
 }

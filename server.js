@@ -37,6 +37,10 @@ io.on("connection", (socket) => {
   socket.on("setWidth", function (data) {
     socket.broadcast.emit("setWidth", data);
   });
+
+  socket.on("setPhoneBounds", function (data) {
+    socket.broadcast.emit("setPhoneBounds", data);
+  })
 });
 
 const port = process.env.PORT || 4000;

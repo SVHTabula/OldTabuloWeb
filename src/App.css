@@ -28,3 +28,19 @@ h5 {
   background: #F0C987;
   color: white;
 }
+
+#drawingCanvas {
+  position: absolute;
+  background: black;
+}
+
+#phoneOutline {
+  border-width: 1px;
+  border-color: white;
+  border-style: dashed;
+  z-index: 1;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  pointer-events: none;
+}
