@@ -72,8 +72,8 @@ export default function DrawingCanvas() {
   }, []);
 
   function handleColorChange(event) {
-    userStrokeStyleRef.current = event.target.value;
-    socket.emit("colorChange", event.target.value);
+    userStrokeStyleRef.current = event;
+    socket.emit("colorChange", event);
   }
 
   return (
@@ -106,7 +106,7 @@ export default function DrawingCanvas() {
         <button onClick={() => userStrokeStyleRef.current = "#110011"}>Purple</button>
         <SketchPicker
           color={userStrokeStyleRef.current}
-          onChangeComplete={(e) => userStrokeStyleRef.current = e.hex}
+          onChangeComplete={(e) => handleColorChange(e.hex)}
         />
       </div>
       <div>

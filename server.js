@@ -30,7 +30,6 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('draw', data);
   });
   socket.on('colorChange', function(data) {
-    console.log("a")
     socket.broadcast.emit('newColor', data);
   })
 });
