@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
+import { SketchPicker } from "react-color";
 import io from "socket.io-client";
 
 const guestStrokeStyle = "#F0C987";
@@ -71,26 +72,42 @@ export default function DrawingCanvas() {
   }
 
   function handleColorChange(event) {
-    setUserStrokeStyle(event.target.value)
+    setUserStrokeStyle(event.target.value);
   }
 
   return (
     <div>
-      <button
-        onClick={() => {
-          canvas.current.getContext("2d").lineWidth -= 10;
-        }}
-      >
-        -
-      </button>
-      <button
-        onClick={() => {
-          canvas.current.getContext("2d").lineWidth += 10;
-        }}
-      >
-        +
-      </button>
+      <div>
+        <button
+          onClick={() => {
+            canvas.current.getContext("2d").lineWidth -= 10;
+          }}
+        >
+          -
+        </button>
+        <button
+          onClick={() => {
+            canvas.current.getContext("2d").lineWidth += 10;
+          }}
+        >
+          +
+        </button>
+      </div>
       <textarea onChange={handleColorChange}></textarea>
+      <div>
+        <button onClick={() => setUserStrokeStyle("#ffffff")}>White</button>
+        <button onClick={() => setUserStrokeStyle("#000000")}>Black</button>
+        <button onClick={() => setUserStrokeStyle("#ff0000")}>Red</button>
+        <button onClick={() => setUserStrokeStyle("#00ff00")}>Green</button>
+        <button onClick={() => setUserStrokeStyle("#0000ff")}>Blue</button>
+        <button onClick={() => setUserStrokeStyle("#ffff00")}>Yellow</button>
+        <button onClick={() => setUserStrokeStyle("#ff6600")}>Orange</button>
+        <button onClick={() => setUserStrokeStyle("#110011")}>Purple</button>
+        <SketchPicker
+          color={userStrokeStyle}
+          onChangeComplete={(e) => setUserStrokeStyle(e.hex)}
+        />
+      </div>
       <div>
         <canvas
           ref={canvas}
