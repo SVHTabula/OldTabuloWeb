@@ -12,12 +12,12 @@ export default function DrawingCanvas() {
   const [isPainting, setIsPainting] = useState(false);
   const [userStrokeStyle, setUserStrokeStyle] = useState("#EE92C2");
   const [prevPos, setPrevPos] = useState({ offsetX: 0, offsetY: 0 });
-  const canvas = useRef(null);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    const cv = canvas.current;
-    cv.width = 1000;
-    cv.height = 800;
+    const canvas = canvasRef.current;
+    canvas.width = 1000;
+    canvas.height = 800;
     const ctx = cv.getContext("2d");
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
@@ -62,7 +62,7 @@ export default function DrawingCanvas() {
   function paint(prevPos, currPos, strokeStyle) {
     const { offsetX, offsetY } = currPos;
     const { offsetX: x, offsetY: y } = prevPos;
-    const ctx = canvas.current.getContext("2d");
+    const ctx = canvasRef.current.getContext("2d");
     ctx.beginPath();
     ctx.strokeStyle = strokeStyle;
     ctx.moveTo(x, y);
@@ -80,14 +80,14 @@ export default function DrawingCanvas() {
       <div>
         <button
           onClick={() => {
-            canvas.current.getContext("2d").lineWidth -= 10;
+            canvasRef.current.getContext("2d").lineWidth -= 10;
           }}
         >
           -
         </button>
         <button
           onClick={() => {
-            canvas.current.getContext("2d").lineWidth += 10;
+            canvasRef.current.getContext("2d").lineWidth += 10;
           }}
         >
           +
@@ -110,7 +110,7 @@ export default function DrawingCanvas() {
       </div>
       <div>
         <canvas
-          ref={canvas}
+          ref={canvasRef}
           style={{ background: "black" }}
           onMouseDown={onMouseDown}
           onMouseLeave={endPaintEvent}
