@@ -29,6 +29,7 @@ export default function ColorPicker() {
       "load",
       function () {
         loadImage(reader.result);
+        socket.emit("updateImage", reader.result);
       },
       false
     );
