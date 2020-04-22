@@ -9,7 +9,6 @@ const line = [];
 const canvasRef = React.createRef();
 
 export default function DrawingCanvas() {
-  const guestStrokeStyleRef = useRef("#F0C987");
   const userStrokeStyleRef = useRef("#EE92C2");
   const isPaintingRef = useRef(false);
   const prevPosRef = useRef({ offsetX: 0, offsetY: 0 });
