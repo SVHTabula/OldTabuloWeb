@@ -13,7 +13,6 @@ export default function DrawingCanvas() {
   const userStrokeStyleRef = useRef("#EE92C2");
   const isPaintingRef = useRef(false);
   const prevPosRef = useRef({ offsetX: 0, offsetY: 0 });
-  console.log('hi');
 
   useEffect(() => {
     const canvas = canvasRef.current;
