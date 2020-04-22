@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { v4 } from "uuid";
 import { CompactPicker as SketchPicker } from "react-color";
 import io from "socket.io-client";
 
-const socket = io('https://tabula-srv.herokuapp.com');
+const socket = io('https://tabula-web.herokuapp.com');
 const userId = v4();
 const line = [];
 const canvasRef = React.createRef();
