@@ -63,13 +63,13 @@ export default function DrawingCanvas() {
     ctx.strokeStyle = lineColorRef.current;
     ctx.lineWidth = lineWidthRef.current;
 
-    canvas.onmousedown = function (nativeEvent) {
+    canvas.addEventListener('mousedown', (nativeEvent) => {
       const { offsetX, offsetY } = nativeEvent;
       isPaintingRef.current = true;
       prevPosRef.current = { offsetX, offsetY };
-    };
+    });
 
-    canvas.onmousemove = function (nativeEvent) {
+    canvas.addEventListener('mousemove', (nativeEvent) => {
       if (isPaintingRef.current) {
         const { offsetX, offsetY } = nativeEvent;
         const offSetData = { offsetX, offsetY };
@@ -80,15 +80,17 @@ export default function DrawingCanvas() {
         line.push(position);
         paint(prevPosRef.current, offSetData, lineColorRef.current);
       }
-    };
+    });
 
-    canvas.onmouseup = canvas.onmouseleave = function () {
+    function endPaintEvent() {
       if (isPaintingRef.current) {
         isPaintingRef.current = false;
         socket.emit("paint", { line, userId });
         line.splice(0, line.length);
       }
-    };
+    }
+
+    canvas.addEventListener('mouseleave mouseup', endPaintEvent);
   }, []);
 
   return (
