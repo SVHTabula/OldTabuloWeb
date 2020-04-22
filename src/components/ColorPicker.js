@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CompactPicker as SketchPicker } from "react-color";
 import SocketContext from "../contexts/socket";
 import CanvasContext from "../contexts/canvas";
@@ -10,33 +10,38 @@ export default function ColorPicker() {
   const { lineColorRef, lineWidthRef } = useContext(CanvasContext);
   const { socket } = useContext(SocketContext);
 
-  function setLineColor(lineColor) {
+  const [lineColor, setColor] = useState(lineColorRef.current);
+  const [lineWidth, setWidth] = useState(lineWidthRef.current);
+
+  useEffect(() => {
     lineColorRef.current = lineColor;
+  }, [lineColor]);
+
+  useEffect(() => {
+    lineWidthRef.current = lineWidth;
+  }, [lineWidth]);
+
+  function setLineColor(lineColor) {
+    setColor(lineColor);
     canvasRef.current.getContext("2d").strokeStyle = lineColor;
     socket.emit("setColor", lineColor);
   }
 
   function setLineWidth(lineWidth) {
-    lineWidthRef.current = lineWidth;
+    setWidth(lineWidth);
     canvasRef.current.getContext("2d").lineWidth = lineWidth;
     socket.emit("setWidth", lineWidth);
   }
 
   return (
-    <div>
+    <div style={{padding: 20}}>
       <div>
         <Slider onChange={(value) => setLineWidth(value)}/>
-        <p>{lineWidthRef.current}</p>
-        <button onClick={() => setLineWidth(lineWidthRef.current - 10)}>
-          -
-        </button>
-        <button onClick={() => setLineWidth(lineWidthRef.current + 10)}>
-          +
-        </button>
+        <p>{lineWidth}</p>
       </div>
       <div>
         <SketchPicker
-          color={lineColorRef.current}
+          color={lineColor}
           onChangeComplete={(e) => setLineColor(e.hex)}
         />
       </div>
