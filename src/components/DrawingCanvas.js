@@ -28,7 +28,7 @@ export default function DrawingCanvas() {
   }
 
   useEffect(() => {
-    socket.on("draw", (data) => {
+    socket.on("paint", (data) => {
       const { id, line } = data;
       if (id !== userId) {
         line.forEach((position) => {

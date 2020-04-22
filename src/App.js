@@ -17,11 +17,11 @@ export default function App() {
   const lineColorRef = useRef('#ffffff');
 
   useEffect(() => {
-    socket.on("newWidth", (width) => {
+    socket.on("setWidth", (width) => {
       lineWidthRef.current = width;
     });
 
-    socket.on("newColor", (color) => {
+    socket.on("setColor", (color) => {
       lineColorRef.current = color;
     });
   },[]);

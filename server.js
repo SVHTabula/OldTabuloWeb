@@ -27,13 +27,15 @@ io.on("connection", (socket) => {
   console.log("socket connected");
   socket.on("paint", function (data) {
     console.log(data);
-    socket.broadcast.emit("draw", data);
+    socket.broadcast.emit("paint", data);
   });
-  socket.on("colorChange", function (data) {
-    socket.broadcast.emit("newColor", data);
+
+  socket.on("setColor", function (data) {
+    socket.broadcast.emit("setColor", data);
   });
-  socket.on("widthChange", function (data) {
-    socket.broadcast.emit("newWidth", data);
+
+  socket.on("setWidth", function (data) {
+    socket.broadcast.emit("setWidth", data);
   });
 });
 

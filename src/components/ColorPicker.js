@@ -11,13 +11,13 @@ export default function ColorPicker() {
   function setLineColor(lineColor) {
     lineColorRef.current = lineColor;
     canvasRef.current.getContext('2d').strokeStyle = lineColor;
-    socket.emit("colorChange", lineColor);
+    socket.emit("setColor", lineColor);
   }
 
   function setLineWidth(lineWidth) {
     lineWidthRef.current = lineWidth;
     canvasRef.current.getContext('2d').lineWidth = lineWidth;
-    socket.emit("widthChange", lineWidth);
+    socket.emit("setColor", lineWidth);
   }
 
   return (
