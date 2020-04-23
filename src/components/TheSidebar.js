@@ -3,6 +3,7 @@ import TheSidebarColorPicker from "./TheSidebarColorPicker";
 import TheSidebarWidthSlider from "./TheSidebarWidthSlider";
 import TheSidebarImageSaver from "./TheSidebarImageSaver";
 import TheSidebarTitle from "./TheSidebarTitle";
+import TheSidebarRoomInformation from "./TheSidebarRoomInformation";
 
 export default function TheSidebar() {
   return (
@@ -11,6 +12,7 @@ export default function TheSidebar() {
       <TheSidebarWidthSlider />
       <TheSidebarColorPicker />
       <TheSidebarImageSaver />
+      <TheSidebarRoomInformation />
     </div>
   );
 }

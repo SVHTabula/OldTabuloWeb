@@ -10,9 +10,9 @@ import RoomContext from "./contexts/room";
 import io from "socket.io-client";
 import { v4 } from "uuid";
 import useLoadImage from "./hooks/useLoadImage";
-import TheAccountDialog from "./components/TheAccountDialog";
+import TheJoinRoomScreen from "./components/TheJoinRoomScreen";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:4000");
 
 export default function App() {
   const userId = useRef(v4());
@@ -77,7 +77,7 @@ export default function App() {
                     <TheDrawingCanvas />
                   </>
                 ) : (
-                  <TheAccountDialog />
+                  <TheJoinRoomScreen />
                 )}
               </RoomContext.Provider>
             </CanvasContext.Provider>

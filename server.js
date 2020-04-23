@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
     } else {
       socket.join(roomId);
       socketToRoom.set(socket.id, roomId);
-      const adminPassword = v4().slice(6);
+      const adminPassword = v4().slice(-6);
       rooms[roomId] = {
         teacher: socket.id,
         teacherDevice: null,
