@@ -31,10 +31,10 @@ export default function TheSidebarRoomInformation() {
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
-                onClick={() => setShowAdminPassword(!showAdminPassword)}
+                onClick={() => setShowJoinPassword(!showJoinPassword)}
                 onMouseDown={(e) => e.preventDefault}
               >
-                {showAdminPassword ? <Visibility /> : <VisibilityOff />}
+                {showJoinPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>
           )
