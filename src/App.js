@@ -79,14 +79,9 @@ export default function App() {
                 joinPassword, setJoinPassword,
                 adminPassword, setAdminPassword
               }}>
-                {roomId ? (
-                  <>
-                    <TheSidebar />
-                    <TheDrawingCanvas />
-                  </>
-                ) : (
-                  <TheRoomEntryScreen />
-                )}
+                {roomId && isTeacher ? <TheSidebar/> : null }
+                {roomId ? <TheDrawingCanvas /> : null }
+                {!roomId ? <TheRoomEntryScreen /> : null }
               </RoomContext.Provider>
             </CanvasContext.Provider>
           </UserContext.Provider>
