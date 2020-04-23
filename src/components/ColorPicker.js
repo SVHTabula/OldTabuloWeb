@@ -71,7 +71,7 @@ export default function ColorPicker() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h3 style={{ textAlign: 'center' }}>Tabula</h3>
+      <h3 style={{ textAlign: 'center' }}>Tabulaa</h3>
       <div>
         <Slider onChange={(value) => setLineWidth(value)} />
         <p>Font size: {lineWidth}px</p>
