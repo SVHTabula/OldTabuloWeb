@@ -88,6 +88,7 @@ export default function ColorPicker() {
       <button onClick={() => saveImage()}>
         Save
       </button>
+
     </div>
   );
 }
