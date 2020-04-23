@@ -25,7 +25,7 @@ export default function TheSidebarRoomInformation() {
       <h3>Join Password (Share with students)</h3>
       <TextField
         type={showJoinPassword ? 'text' : 'password'}
-        defaultValue={joinPassword}
+        value={joinPassword}
         InputProps={{
           readOnly: true,
           endAdornment: (
