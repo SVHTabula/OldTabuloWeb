@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import PhoneOutline from "./PhoneOutline";
+import PhoneOutline, { phoneOutlineRef } from "./PhoneOutline";
 
 import SocketContext from "../contexts/socket";
 import UserContext from "../contexts/user";
@@ -90,6 +90,14 @@ export default function DrawingCanvas() {
         height: window.innerHeight,
         width: window.innerWidth
       })
+    });
+
+    socket.on('setPhoneBounds', (bounds) => {
+      const {x, y, width, height} = bounds;
+      phoneOutlineRef.current.style.left = `${x}px`;
+      phoneOutlineRef.current.style.top = `${y}px`;
+      phoneOutlineRef.current.style.width = `${width}px`;
+      phoneOutlineRef.current.style.height = `${height}px`;
     });
   }, []);
 
