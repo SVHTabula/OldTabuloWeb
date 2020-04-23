@@ -23,10 +23,18 @@ app.get("/", function (req, res) {
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
+let canvasBounds = {width: 100, height: 100};
+let phoneBounds = {x: 0, y: 0, width: 100, height: 100};
+let color = '#ffffff';
+let width = 5;
+
 io.on("connection", (socket) => {
-  console.log("socket connected");
+  socket.emit("setCanvasBounds", canvasBounds);
+  socket.emit("setPhoneBounds", phoneBounds);
+  socket.emit("setColor", color);
+  socket.emit("setWidth", width);
+
   socket.on("paint", function (data) {
-    console.log(data);
     socket.broadcast.emit("paint", data);
   });
 
@@ -40,6 +48,10 @@ io.on("connection", (socket) => {
 
   socket.on("setPhoneBounds", function (data) {
     socket.broadcast.emit("setPhoneBounds", data);
+  });
+
+  socket.on("setCanvasBounds", function (data) {
+    socket.broadcast.emit("setCanvasBounds", data);
   });
 
   socket.on("updateImage", function (data) {
