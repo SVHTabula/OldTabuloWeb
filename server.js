@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
 
   socket.on("setPhoneBounds", function (data) {
     socket.broadcast.emit("setPhoneBounds", data);
-  })
+  });
 
   socket.on("updateImage", function (data) {
     socket.broadcast.emit("updateImage", data);

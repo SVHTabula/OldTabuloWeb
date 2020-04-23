@@ -80,7 +80,8 @@ export default function DrawingCanvas() {
       }
     }
 
-    canvas.addEventListener('mouseleave mouseup', endPaintEvent);
+    canvas.addEventListener('mouseleave', endPaintEvent);
+    canvas.addEventListener('mouseup', endPaintEvent);
   }, []);
 
   return (
