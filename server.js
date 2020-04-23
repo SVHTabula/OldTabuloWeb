@@ -43,32 +43,33 @@ io.on("connection", (socket) => {
       socket.join(id);
       rooms[id].students.push(socket.id);
       fn({success: true});
+    } else {
+      fn({success: false, message: 'Invalid room ID or incorrect password.'});
     }
-    fn({success: false, message: 'Invalid room ID or incorrect password.'});
   });
 
   socket.on('createRoom', ({id, joinPassword, adminPassword}, fn) => {
     if (rooms[id]) {
       fn({success: false, message: 'Room already exists.'});
-      return;
+    } else {
+      socket.join(id);
+      rooms[id] = {
+        teacher: socket.id,
+        students: [],
+        joinPassword: joinPassword,
+        adminPassword: adminPassword
+      };
+      fn({success: true});
     }
-    socket.join(id);
-    rooms[id] = {
-      teacher: socket.id,
-      students: [],
-      joinPassword: joinPassword,
-      adminPassword: adminPassword
-    };
-    fn({success: true});
   });
 
   socket.on('connectToRoom', ({id, password}, fn) => {
     if (rooms[id] && rooms[id].adminPassword === password) {
       socket.join(id);
-      rooms[id].students.push(socket.id);
       fn({success: true});
+    } else {
+      fn({success: false, message: 'Invalid room ID or incorrect password.'});
     }
-    fn({success: false, message: 'Invalid room ID or incorrect password.'});
   });
 
   socket.emit("setCanvasBounds", canvasBounds);
