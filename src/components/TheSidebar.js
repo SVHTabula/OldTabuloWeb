@@ -2,11 +2,12 @@ import React from "react";
 import TheSidebarColorPicker from "./TheSidebarColorPicker";
 import TheSidebarWidthSlider from "./TheSidebarWidthSlider";
 import TheSidebarImageSaver from "./TheSidebarImageSaver";
+import TheSidebarTitle from "./TheSidebarTitle";
 
 export default function TheSidebar() {
   return (
-    <div style={{ padding: 20 }}>
-      <h3 style={{ textAlign: 'center' }}>Tabula</h3>
+    <div id="sidebar">
+      <TheSidebarTitle />
       <TheSidebarWidthSlider />
       <TheSidebarColorPicker />
       <TheSidebarImageSaver />

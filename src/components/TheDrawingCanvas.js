@@ -18,6 +18,7 @@ export default function TheDrawingCanvas() {
   function paint(prevPos, currPos) {
     const { offsetX, offsetY } = currPos;
     const { offsetX: x, offsetY: y } = prevPos;
+
     const ctx = canvasRef.current.getContext("2d");
     ctx.beginPath();
     ctx.strokeStyle = lineColorRef.current;
@@ -45,8 +46,8 @@ export default function TheDrawingCanvas() {
     const canvas = canvasRef.current;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    const ctx = canvas.getContext("2d");
 
+    const ctx = canvas.getContext("2d");
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
     ctx.strokeStyle = lineColorRef.current;
@@ -82,7 +83,6 @@ export default function TheDrawingCanvas() {
     canvas.addEventListener("mouseleave", endPaintEvent);
     canvas.addEventListener("mouseup", endPaintEvent);
 
-
     socket.on("setPhoneBounds", (bounds) => {
       const { x, y, width, height } = bounds;
       phoneOutlineRef.current.style.left = `${x}px`;
@@ -93,14 +93,7 @@ export default function TheDrawingCanvas() {
   });
 
   return (
-    <div
-      style={{
-        position: "relative",
-        height: "100vh",
-        width: "100vw",
-        overflow: "hidden",
-      }}
-    >
+    <div id="drawingCanvasContainer">
       <canvas ref={canvasRef} id="drawingCanvas" />
       <TheDrawingCanvasPhoneOutline />
     </div>
