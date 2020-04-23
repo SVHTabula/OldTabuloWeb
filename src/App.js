@@ -21,9 +21,9 @@ export default function App() {
   const lineColorRef = useRef("#ffffff");
   const loadImage = useLoadImage(canvasRef);
 
-  const [roomId, setRoomId] = useState('');
-  const [joinPassword, setJoinPassword] = useState('');
-  const [adminPassword, setAdminPassword] = useState('');
+  const [roomId, setRoomId] = useState("");
+  const [joinPassword, setJoinPassword] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
   const [isTeacher, setIsTeacher] = useState(false);
 
   useEffect(() => {
@@ -60,13 +60,13 @@ export default function App() {
 
   return (
     <Fragment>
-      <div className="main" style={{position: 'relative'}}>
+      <div className="main" style={{ position: "relative" }}>
         <SocketContext.Provider value={{ socket }}>
           <UserContext.Provider
             value={{
               userId: userId.current,
               isTeacher,
-              setIsTeacher
+              setIsTeacher,
             }}
           >
             <CanvasContext.Provider
@@ -75,18 +75,24 @@ export default function App() {
                 lineColorRef,
               }}
             >
-              <RoomContext.Provider value={{
-                roomId, setRoomId,
-                joinPassword, setJoinPassword,
-                adminPassword, setAdminPassword
-              }}>
-                {roomId && isTeacher ? <TheSidebar/> : null }
-                {roomId ?
+              <RoomContext.Provider
+                value={{
+                  roomId,
+                  setRoomId,
+                  joinPassword,
+                  setJoinPassword,
+                  adminPassword,
+                  setAdminPassword,
+                }}
+              >
+                {roomId && isTeacher ? <TheSidebar /> : null}
+                {roomId ? (
                   <>
                     <TheDrawingCanvas />
-                    <TheDrawingCanvasSaveButton />
-                  </> : null }
-                {!roomId ? <TheRoomEntryScreen /> : null }
+                    {!isTeacher ? <TheDrawingCanvasSaveButton /> : null}
+                  </>
+                ) : null}
+                {!roomId ? <TheRoomEntryScreen /> : null}
               </RoomContext.Provider>
             </CanvasContext.Provider>
           </UserContext.Provider>
