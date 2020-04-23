@@ -39,18 +39,22 @@ io.on("connection", (socket) => {
   });
 
   socket.on("setColor", function (data) {
+    color = data;
     socket.broadcast.emit("setColor", data);
   });
 
   socket.on("setWidth", function (data) {
+    width = data;
     socket.broadcast.emit("setWidth", data);
   });
 
   socket.on("setPhoneBounds", function (data) {
+    phoneBounds = data;
     socket.broadcast.emit("setPhoneBounds", data);
   });
 
   socket.on("setCanvasBounds", function (data) {
+    canvasBounds = data;
     socket.broadcast.emit("setCanvasBounds", data);
   });
 

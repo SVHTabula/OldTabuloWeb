@@ -84,8 +84,8 @@ export default function DrawingCanvas() {
     canvas.addEventListener('mouseup', endPaintEvent);
     window.addEventListener("resize", () => {
       const canvas = canvasRef.current;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.getContext('2d').canvas.width = window.innerWidth;
+      canvas.getContext('2d').canvas.height = window.innerHeight;
       socket.emit('setCanvasBounds', {
         height: window.innerHeight,
         width: window.innerWidth
