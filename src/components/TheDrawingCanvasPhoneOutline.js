@@ -4,7 +4,7 @@ import SocketContext from "../contexts/socket";
 
 export const phoneOutlineRef = React.createRef();
 
-export default function PhoneOutline() {
+export default function TheDrawingCanvasPhoneOutline() {
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function PhoneOutline() {
       phoneOutlineRef.current.style.left = x;
       phoneOutlineRef.current.style.top = y;
     });
-  }, []);
+  });
 
   return (
     <div
