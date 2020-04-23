@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import SocketContext from "../contexts/socket";
 import { canvasRef } from "./TheDrawingCanvas";
 import useLoadImage from "../hooks/useLoadImage";
@@ -6,6 +6,12 @@ import useLoadImage from "../hooks/useLoadImage";
 export default function TheSidebarImageSaver() {
   const { socket } = useContext(SocketContext);
   const loadImage = useLoadImage(canvasRef);
+
+  useEffect(() => {
+    socket.on("clearCanvas", () => {
+      clearCanvas();
+    });
+  }, []);
 
   function openImage() {
     const file = document.querySelector("input[type=file]").files[0];
