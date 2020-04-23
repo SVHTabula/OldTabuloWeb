@@ -11,7 +11,7 @@ export default function TheSidebarImageSaver() {
     socket.on("clearCanvas", () => {
       clearCanvas();
     });
-  }, []);
+  });
 
   function openImage() {
     const file = document.querySelector("input[type=file]").files[0];
