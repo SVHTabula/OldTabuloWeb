@@ -29,6 +29,16 @@ export default function DrawingCanvas() {
     prevPosRef.current = { offsetX, offsetY };
   }
 
+  function loadImage(url) {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.src = url;
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+    };
+  }
+
   useEffect(() => {
     socket.on("paint", (data) => {
       const { id, line } = data;
@@ -53,13 +63,13 @@ export default function DrawingCanvas() {
     ctx.strokeStyle = lineColorRef.current;
     ctx.lineWidth = lineWidthRef.current;
 
-    canvas.addEventListener('mousedown', (nativeEvent) => {
+    canvas.addEventListener("mousedown", (nativeEvent) => {
       const { offsetX, offsetY } = nativeEvent;
       isPaintingRef.current = true;
       prevPosRef.current = { offsetX, offsetY };
     });
 
-    canvas.addEventListener('mousemove', (nativeEvent) => {
+    canvas.addEventListener("mousemove", (nativeEvent) => {
       if (isPaintingRef.current) {
         const { offsetX, offsetY } = nativeEvent;
         const offSetData = { offsetX, offsetY };
@@ -78,14 +88,21 @@ export default function DrawingCanvas() {
         socket.emit("paint", { line, userId });
         line.splice(0, line.length);
       }
-    };
+    }
 
-    canvas.addEventListener('mouseleave', endPaintEvent);
-    canvas.addEventListener('mouseup', endPaintEvent);
+    canvas.addEventListener("mouseleave", endPaintEvent);
+    canvas.addEventListener("mouseup", endPaintEvent);
     window.addEventListener("resize", () => {
       const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      const imageData = canvas.toDataURL();
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.strokeStyle = lineColorRef.current;
+      ctx.lineWidth = lineWidthRef.current;
+      loadImage(imageData);
     });
   }, []);
 
