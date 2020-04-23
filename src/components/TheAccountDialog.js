@@ -55,6 +55,7 @@ export default function TheAccountDialog() {
           onClick={() => {
             socket.emit('createRoom', function(result) {
               if (result.success) {
+                console.log('hi');
                 setRoomId(formRoomId);
                 setJoinPassword(roomPassword);
                 setAdminPassword(result.adminPassword);
