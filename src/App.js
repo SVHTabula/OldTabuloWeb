@@ -19,7 +19,7 @@ export default function App() {
   const lineColorRef = useRef('#ffffff');
   const loadImage = useLoadImage(canvasRef);
 
-  const joinedRoom = useState(false);
+  const [joinedRoom, setJoinedRoom] = useState(false);
 
   useEffect(() => {
     if (joinedRoom) {
@@ -54,7 +54,7 @@ export default function App() {
     <Fragment>
       <div className="main">
         <SocketContext.Provider value={{socket}}>
-          <UserContext.Provider value={{userId: userId.current}}>
+          <UserContext.Provider value={{userId: userId.current, joinedRoom, setJoinedRoom}}>
             <CanvasContext.Provider value={{
               lineWidthRef,
               lineColorRef

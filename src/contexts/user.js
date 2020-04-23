@@ -1,7 +1,9 @@
 import React from 'react';
 
 const UserContext = React.createContext({
-  id: null
+  UserId: null,
+  joinedRoom: null,
+  setJoinedRoom: () => {}
 });
 
 export default UserContext;
