@@ -29,6 +29,16 @@ export default function DrawingCanvas() {
     prevPosRef.current = { offsetX, offsetY };
   }
 
+  function loadImage(url) {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.src = url;
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+    };
+  }
+
   useEffect(() => {
     socket.on("paint", (data) => {
       const { id, line } = data;
@@ -53,13 +63,13 @@ export default function DrawingCanvas() {
     ctx.strokeStyle = lineColorRef.current;
     ctx.lineWidth = lineWidthRef.current;
 
-    canvas.addEventListener('mousedown', (nativeEvent) => {
+    canvas.addEventListener("mousedown", (nativeEvent) => {
       const { offsetX, offsetY } = nativeEvent;
       isPaintingRef.current = true;
       prevPosRef.current = { offsetX, offsetY };
     });
 
-    canvas.addEventListener('mousemove', (nativeEvent) => {
+    canvas.addEventListener("mousemove", (nativeEvent) => {
       if (isPaintingRef.current) {
         const { offsetX, offsetY } = nativeEvent;
         const offSetData = { offsetX, offsetY };
@@ -80,20 +90,27 @@ export default function DrawingCanvas() {
       }
     }
 
-    canvas.addEventListener('mouseleave', endPaintEvent);
-    canvas.addEventListener('mouseup', endPaintEvent);
+    canvas.addEventListener("mouseleave", endPaintEvent);
+    canvas.addEventListener("mouseup", endPaintEvent);
     window.addEventListener("resize", () => {
       const canvas = canvasRef.current;
-      canvas.getContext('2d').canvas.width = window.innerWidth;
-      canvas.getContext('2d').canvas.height = window.innerHeight;
-      socket.emit('setCanvasBounds', {
+      const ctx = canvas.getContext("2d");
+      const imageData = canvas.toDataURL();
+      ctx.canvas.width = window.innerWidth;
+      ctx.canvas.height = window.innerHeight;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.strokeStyle = lineColorRef.current;
+      ctx.lineWidth = lineWidthRef.current;
+      loadImage(imageData);
+      socket.emit("setCanvasBounds", {
         height: window.innerHeight,
-        width: window.innerWidth
-      })
+        width: window.innerWidth,
+      });
     });
 
-    socket.on('setPhoneBounds', (bounds) => {
-      const {x, y, width, height} = bounds;
+    socket.on("setPhoneBounds", (bounds) => {
+      const { x, y, width, height } = bounds;
       phoneOutlineRef.current.style.left = `${x}px`;
       phoneOutlineRef.current.style.top = `${y}px`;
       phoneOutlineRef.current.style.width = `${width}px`;
