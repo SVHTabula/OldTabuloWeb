@@ -84,6 +84,8 @@ io.on("connection", (socket) => {
 
   socket.on('connectToRoom', ({id: roomId, password}, fn) => {
     const room = rooms.get(roomId);
+    console.log([...rooms]);
+    console.log(JSON.stringify(room));
     if (room && room.adminPassword === password) {
       socket.join(roomId);
       room.teacherDevice = socket.id;
