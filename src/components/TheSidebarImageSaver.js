@@ -59,6 +59,10 @@ export default function TheSidebarImageSaver() {
       <button onClick={() => saveImage()}>
         Save
       </button>
+      <br />
+      <button onClick={() => saveImage()}>
+        Eraser
+      </button>
     </div>
   );
 }
