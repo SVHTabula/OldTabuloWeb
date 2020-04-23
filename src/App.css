@@ -34,6 +34,21 @@ h5 {
   background: black;
 }
 
+#drawingCanvasContainer {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+#sidebar {
+  padding: 20px;
+}
+
+#sidebar-title {
+  text-align: center;
+}
+
 #phoneOutline {
   border-width: 1px;
   border-color: white;

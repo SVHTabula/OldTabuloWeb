@@ -1,19 +1,12 @@
 import React, { useContext } from "react";
 import SocketContext from "../contexts/socket";
 import { canvasRef } from "./TheDrawingCanvas";
+import useLoadImage from "../hooks/useLoadImage";
 
 export default function TheSidebarImageSaver() {
   const { socket } = useContext(SocketContext);
+  const loadImage = useLoadImage(canvasRef);
 
-  function loadImage(url) {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    img.src = url;
-    img.onload = function () {
-      ctx.drawImage(img, 0, 0);
-    };
-  }
   function openImage() {
     const file = document.querySelector("input[type=file]").files[0];
     const reader = new FileReader();
@@ -57,7 +50,7 @@ export default function TheSidebarImageSaver() {
       <input id="fileItem" type="file" onChange={() => openImage()} />
       <br />
       <button onClick={() => saveImage()}>
-        Save
+        Savef
       </button>
     </div>
   );
