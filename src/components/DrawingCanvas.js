@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import PhoneOutline from './PhoneOutline';
+import PhoneOutline from "./PhoneOutline";
 
 import SocketContext from "../contexts/socket";
 import UserContext from "../contexts/user";
@@ -42,8 +42,8 @@ export default function DrawingCanvas() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = 1000;
-    canvas.height = 800;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     const ctx = canvas.getContext("2d");
 
     //loadImage("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fkimcampion.com%2Fwp-content%2Fuploads%2F2015%2F06%2Fwild_lion-1600x1200.jpg");
@@ -78,18 +78,26 @@ export default function DrawingCanvas() {
         socket.emit("paint", { line, userId });
         line.splice(0, line.length);
       }
-    }
+    };
 
     canvas.addEventListener('mouseleave', endPaintEvent);
     canvas.addEventListener('mouseup', endPaintEvent);
+    window.addEventListener("resize", () => {
+      const canvas = canvasRef.current;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
   }, []);
 
   return (
-    <div style={{
-      position: 'relative',
-      height: '60vh',
-      width: '60vw'
-    }}>
+    <div
+      style={{
+        position: "relative",
+        height: "100vh",
+        width: "100vw",
+        overflow: "hidden",
+      }}
+    >
       <canvas ref={canvasRef} id="drawingCanvas" />
       <PhoneOutline />
     </div>

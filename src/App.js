@@ -28,7 +28,6 @@ export default function App() {
 
   return (
     <Fragment>
-      <h3 style={{ textAlign: 'center' }}>Tabula</h3>
       <div className="main">
         <SocketContext.Provider value={{socket}}>
           <UserContext.Provider value={{userId: userId.current}}>
