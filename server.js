@@ -28,7 +28,34 @@ let phoneBounds = {x: 0, y: 0, width: 100, height: 100};
 let color = '#ffffff';
 let width = 5;
 
+const rooms = {
+  /*
+    id: {
+      teacher: 'socketId',
+      members: ['socketId', 'socketId']
+    }
+  */
+};
+
 io.on("connection", (socket) => {
+  socket.on('joinRoom', (room, fn) => {
+    if (rooms[room]) {
+      socket.join(room);
+      rooms[room].students.push(socket.id);
+      fn({success: true});
+    }
+    fn({success: false, message: 'Room not found.'});
+  });
+
+  socket.on('createRoom', (room, fn) => {
+    if (rooms[room]) {
+      fn({success: false, message: 'Room already exists.'});
+    }
+    socket.join(room);
+    rooms[room] = {teacher: socket.id, students: []};
+    fn({success: true});
+  });
+
   socket.emit("setCanvasBounds", canvasBounds);
   socket.emit("setPhoneBounds", phoneBounds);
   socket.emit("setColor", color);

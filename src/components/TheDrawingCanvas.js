@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import PhoneOutline, { phoneOutlineRef } from "./PhoneOutline";
+import TheDrawingCanvasPhoneOutline, { phoneOutlineRef } from "./TheDrawingCanvasPhoneOutline";
 
 import SocketContext from "../contexts/socket";
 import UserContext from "../contexts/user";
@@ -8,7 +8,7 @@ import CanvasContext from "../contexts/canvas";
 const line = [];
 export const canvasRef = React.createRef();
 
-export default function DrawingCanvas() {
+export default function TheDrawingCanvas() {
   const isPaintingRef = useRef(false);
   const prevPosRef = useRef({ offsetX: 0, offsetY: 0 });
   const { socket } = useContext(SocketContext);
@@ -29,15 +29,6 @@ export default function DrawingCanvas() {
     prevPosRef.current = { offsetX, offsetY };
   }
 
-  function loadImage(url) {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    img.src = url;
-    img.onload = function () {
-      ctx.drawImage(img, 0, 0);
-    };
-  }
 
   useEffect(() => {
     socket.on("paint", (data) => {
@@ -48,15 +39,13 @@ export default function DrawingCanvas() {
         });
       }
     });
-  }, []);
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const ctx = canvas.getContext("2d");
-
-    //loadImage("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fkimcampion.com%2Fwp-content%2Fuploads%2F2015%2F06%2Fwild_lion-1600x1200.jpg");
 
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
@@ -92,22 +81,7 @@ export default function DrawingCanvas() {
 
     canvas.addEventListener("mouseleave", endPaintEvent);
     canvas.addEventListener("mouseup", endPaintEvent);
-    window.addEventListener("resize", () => {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      const imageData = canvas.toDataURL();
-      ctx.canvas.width = window.innerWidth;
-      ctx.canvas.height = window.innerHeight;
-      ctx.lineJoin = "round";
-      ctx.lineCap = "round";
-      ctx.strokeStyle = lineColorRef.current;
-      ctx.lineWidth = lineWidthRef.current;
-      loadImage(imageData);
-      socket.emit("setCanvasBounds", {
-        height: window.innerHeight,
-        width: window.innerWidth,
-      });
-    });
+
 
     socket.on("setPhoneBounds", (bounds) => {
       const { x, y, width, height } = bounds;
@@ -116,7 +90,7 @@ export default function DrawingCanvas() {
       phoneOutlineRef.current.style.width = `${width}px`;
       phoneOutlineRef.current.style.height = `${height}px`;
     });
-  }, []);
+  });
 
   return (
     <div
@@ -128,7 +102,7 @@ export default function DrawingCanvas() {
       }}
     >
       <canvas ref={canvasRef} id="drawingCanvas" />
-      <PhoneOutline />
+      <TheDrawingCanvasPhoneOutline />
     </div>
   );
 }
