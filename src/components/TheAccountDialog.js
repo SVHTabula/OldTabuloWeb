@@ -32,6 +32,14 @@ export default function TheAccountDialog() {
           value={roomPassword}
           onChange={({value}) => setRoomPassword(value)}
         />
+        <br/>
+        <TextField
+          id="roomPassword"
+          label="Password"
+          type="password"
+          variant="outlined"
+          style={{ flexGrow: 1 }}
+        />
         <Button
           variant="contained"
           style={{ marginTop: 10, flexGrow: 1 }}
