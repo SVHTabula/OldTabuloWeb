@@ -41,6 +41,7 @@ export default function TheSidebarImageSaver() {
     const ctx = canvas.getContext("2d");
     if (window.confirm("Are you sure you want to create a new canvas?\nYOU WILL LOSE ANY UNSAVED DATA!")) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      socket.emit("clearCanvas", true);
     }
   }
 

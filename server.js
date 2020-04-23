@@ -87,6 +87,10 @@ io.on("connection", (socket) => {
 
   socket.on("updateImage", function (data) {
     socket.broadcast.emit("updateImage", data);
+  });
+
+  socket.on("clearCanvas", function (data) {
+    socket.broadcast.emit("clearCanvas", data);
   })
 });
 
