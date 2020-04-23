@@ -35,7 +35,7 @@ export default function App() {
         lineColorRef.current = color;
       });
 
-      window.addEventListener("resize", () => {
+      function handleResize() {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         const imageData = canvas.toDataURL();
@@ -50,7 +50,10 @@ export default function App() {
           height: window.innerHeight,
           width: window.innerWidth,
         });
-      });
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
     }
   });
 
