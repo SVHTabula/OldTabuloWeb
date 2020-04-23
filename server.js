@@ -29,8 +29,11 @@ const rooms = new Map();
 
 io.on("connection", (socket) => {
   socket.on('disconnect', () => {
-    const room = socketToRoom[socket.id];
+    const room = socketToRoom.get(socket.id);
     if (room && room.teacher === socket.id) {
+      for (const socketId of room.students) {
+        socket.to(socketId).emit('leaveRoom');
+      }
       rooms.delete(socket.id);
     }
   });
@@ -95,7 +98,7 @@ io.on("connection", (socket) => {
   }
 
   function isTeacher() {
-    const room = rooms.get(getRoomId());
+    const room = rooms.get(getRoomId()) || {};
     return room.teacher === socket.id || room.teacherDevice === socket.id;
   }
 
