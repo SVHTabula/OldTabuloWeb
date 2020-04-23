@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import SocketContext from "../contexts/socket";
 import { canvasRef } from "./TheDrawingCanvas";
 import useLoadImage from "../hooks/useLoadImage";
+import { Button, IconButton } from "@material-ui/core";
 
 export default function TheSidebarImageSaver() {
   const { socket } = useContext(SocketContext);
@@ -31,13 +32,11 @@ export default function TheSidebarImageSaver() {
 
   function saveImage() {
     const canvas = canvasRef.current;
-    const downloadLink = document.createElement('a');
+    const downloadLink = document.createElement("a");
     downloadLink.setAttribute("download", "output.png");
     downloadLink.setAttribute(
       "href",
-      canvas
-      .toDataURL("image/png")
-      .replace("image/png", "image/octet-stream")
+      canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
     );
     downloadLink.click();
   }
@@ -45,7 +44,11 @@ export default function TheSidebarImageSaver() {
   function clearCanvas() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (window.confirm("Are you sure you want to create a new canvas?\nYOU WILL LOSE ANY UNSAVED DATA!")) {
+    if (
+      window.confirm(
+        "Are you sure you want to create a new canvas?\nYOU WILL LOSE ANY UNSAVED DATA!"
+      )
+    ) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       socket.emit("clearCanvas", true);
     }
@@ -53,12 +56,40 @@ export default function TheSidebarImageSaver() {
 
   return (
     <div>
-      <button onClick={() => clearCanvas()}>New</button>
-      <input id="fileItem" type="file" onChange={() => openImage()} />
-      <br />
-      <button onClick={() => saveImage()}>
-        Save
-      </button>
+      <input
+        id="fileItem"
+        type="file"
+        onChange={() => openImage()}
+        style={{ display: "none" }}
+      />
+      <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
+        <Button
+          onClick={() => clearCanvas()}
+          variant="outlined"
+          color="primary"
+          style={{ flexGrow: 1, margin: 10 }}
+        >
+          New
+        </Button>
+        <label htmlFor="fileItem" style={{ display: "flex", flexGrow: 1, margin: 10 }}>
+          <Button
+            component="div"
+            variant="contained"
+            color="primary"
+            style={{ flexGrow: 1 }}
+          >
+            Open
+          </Button>
+        </label>
+        <Button
+          onClick={() => saveImage()}
+          variant="contained"
+          color="secondary"
+          style={{ flexGrow: 1, margin: 10 }}
+        >
+          Save
+        </Button>
+      </div>
     </div>
   );
 }
