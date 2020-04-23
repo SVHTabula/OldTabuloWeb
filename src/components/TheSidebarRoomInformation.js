@@ -40,9 +40,10 @@ export default function TheSidebarRoomInformation() {
             </InputAdornment>
           )
         }}
+        style={{marginBottom: 20}}
       />
       <TextField
-        label="Admin Password (DO NOT SHARE)"
+        label="Admin Password (DON'T SHARE)"
         type={showAdminPassword ? 'text' : 'password'}
         value={adminPassword}
         InputProps={{
