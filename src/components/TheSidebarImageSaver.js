@@ -36,12 +36,21 @@ export default function TheSidebarImageSaver() {
     downloadLink.click();
   }
 
+  function clearCanvas() {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (window.confirm("Are you sure you want to create a new canvas?\nYOU WILL LOSE ANY UNSAVED DATA!")) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
   return (
     <div>
+      <button onClick={() => clearCanvas()}>New</button>
       <input id="fileItem" type="file" onChange={() => openImage()} />
       <br />
       <button onClick={() => saveImage()}>
-        Savef
+        Save
       </button>
     </div>
   );
