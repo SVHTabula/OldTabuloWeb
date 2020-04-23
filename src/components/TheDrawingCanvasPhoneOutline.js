@@ -18,9 +18,6 @@ export default function TheDrawingCanvasPhoneOutline() {
   });
 
   return (
-    <div
-      ref={phoneOutlineRef}
-      id="phoneOutline"
-    />
+    <div ref={phoneOutlineRef} id="phoneOutline" />
   );
 }
