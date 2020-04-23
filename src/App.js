@@ -5,6 +5,7 @@ import TheSidebar from "./components/TheSidebar";
 import SocketContext from "./contexts/socket";
 import UserContext from "./contexts/user";
 import CanvasContext from "./contexts/canvas";
+import RoomContext from "./contexts/room";
 
 import io from "socket.io-client";
 import { v4 } from "uuid";
@@ -19,10 +20,12 @@ export default function App() {
   const lineColorRef = useRef("#ffffff");
   const loadImage = useLoadImage(canvasRef);
 
-  const [joinedRoom, setJoinedRoom] = useState(false);
+  const [roomId, setRoomId] = useState('');
+  const [joinPassword, setJoinPassword] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
 
   useEffect(() => {
-    if (joinedRoom) {
+    if (roomId) {
       socket.on("setWidth", (width) => {
         lineWidthRef.current = width;
       });
@@ -48,9 +51,6 @@ export default function App() {
         });
       });
     }
-    if (joinedRoom) {
-      socket.emit("joinRoom", joinedRoom, function (data) {});
-    }
   });
 
   return (
@@ -58,7 +58,7 @@ export default function App() {
       <div className="main">
         <SocketContext.Provider value={{ socket }}>
           <UserContext.Provider
-            value={{ userId: userId.current, joinedRoom, setJoinedRoom }}
+            value={{ userId: userId.current }}
           >
             <CanvasContext.Provider
               value={{
@@ -66,14 +66,20 @@ export default function App() {
                 lineColorRef,
               }}
             >
-              {joinedRoom ? (
-                <>
-                  <TheSidebar />
-                  <TheDrawingCanvas />
-                </>
-              ) : (
-                <TheAccountDialog />
-              )}
+              <RoomContext.Provider value={{
+                roomId, setRoomId,
+                joinPassword, setJoinPassword,
+                adminPassword, setAdminPassword
+              }}>
+                {roomId ? (
+                  <>
+                    <TheSidebar />
+                    <TheDrawingCanvas />
+                  </>
+                ) : (
+                  <TheAccountDialog />
+                )}
+              </RoomContext.Provider>
             </CanvasContext.Provider>
           </UserContext.Provider>
         </SocketContext.Provider>
