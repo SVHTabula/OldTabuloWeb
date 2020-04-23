@@ -1,13 +1,16 @@
 import React, {useContext, useState} from "react";
 import RoomContext from '../contexts/room';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
 
 export default function TheSidebarRoomInformation() {
-  // const [showJoinPassword, setShowJoinPassword] = useState(false);
-  // const [showAdminPassword, setShowAdminPassword] = useState(false);
+  const [showJoinPassword, setShowJoinPassword] = useState(false);
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
 
   const { roomId, joinPassword, adminPassword } = useContext(RoomContext);
-  console.log(`adminPasswrd: ${adminPassword} lol`);
   console.log(roomId, joinPassword, adminPassword);
 
   return (
@@ -17,6 +20,42 @@ export default function TheSidebarRoomInformation() {
         defaultValue={roomId}
         InputProps={{
           readOnly: true,
+        }}
+      />
+      <h3>Join Password (Share with students)</h3>
+      <TextField
+        type={showJoinPassword ? 'text' : 'password'}
+        defaultValue={joinPassword}
+        InputProps={{
+          readOnly: true,
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setShowAdminPassword(!showAdminPassword)}
+                onMouseDown={(e) => e.preventDefault}
+              >
+                {showAdminPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          )
+        }}
+      />
+      <TextField
+        label="Admin Password (DO NOT SHARE)"
+        type={showAdminPassword ? 'text' : 'password'}
+        value={adminPassword}
+        InputProps={{
+          readOnly: true,
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setShowAdminPassword(!showAdminPassword)}
+                onMouseDown={(e) => e.preventDefault}
+              >
+                {showAdminPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          )
         }}
       />
     </div>
