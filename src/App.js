@@ -23,6 +23,7 @@ export default function App() {
   const [roomId, setRoomId] = useState('');
   const [joinPassword, setJoinPassword] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
+  const [isTeacher, setIsTeacher] = useState(false);
 
   useEffect(() => {
     if (roomId) {
@@ -58,7 +59,11 @@ export default function App() {
       <div className="main">
         <SocketContext.Provider value={{ socket }}>
           <UserContext.Provider
-            value={{ userId: userId.current }}
+            value={{
+              userId: userId.current,
+              isTeacher,
+              setIsTeacher
+            }}
           >
             <CanvasContext.Provider
               value={{
