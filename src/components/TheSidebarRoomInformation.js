@@ -7,6 +7,7 @@ export default function TheSidebarRoomInformation() {
   // const [showAdminPassword, setShowAdminPassword] = useState(false);
 
   const { roomId, joinPassword, adminPassword } = useContext(RoomContext);
+  console.log(`adminPasswrd: ${adminPassword} lol`);
   console.log(roomId, joinPassword, adminPassword);
 
   return (

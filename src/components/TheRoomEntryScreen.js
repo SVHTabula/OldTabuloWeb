@@ -61,7 +61,7 @@ export default function TheRoomEntryScreen() {
             style={{ marginTop: 5, flexGrow: 1 }}
             color="secondary"
             onClick={() => {
-              socket.emit('createRoom', {id: formRoomId, roomPassword }, function(result) {
+              socket.emit('createRoom', {id: formRoomId, password: roomPassword }, function(result) {
                 if (result.success) {
                   setRoomId(formRoomId);
                   setJoinPassword(roomPassword);

@@ -40,6 +40,8 @@ io.on("connection", (socket) => {
 
   socket.on('joinRoom', ({id: roomId, password: roomPassword}, fn) => {
     const room = rooms.get(roomId);
+    console.log(roomId);
+    console.log(JSON.stringify(room));
     if (room && room.joinPassword === roomPassword) {
       socket.join(roomId);
       room.students.push(socket.id);
@@ -51,7 +53,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on('createRoom', ({id: roomId, joinPassword}, fn) => {
+  socket.on('createRoom', ({id: roomId, password: joinPassword}, fn) => {
     if (rooms.has(roomId)) {
       fn({success: false, message: 'Room already exists.'});
     } else {
@@ -125,14 +127,14 @@ io.on("connection", (socket) => {
     if (!isTeacher()) return;
     const roomId = getRoomId();
     rooms.get(roomId).phoneBounds = phoneBounds;
-    socket.to(roomId).broadcast.emit("setPhoneBounds", data);
+    socket.to(roomId).broadcast.emit("setPhoneBounds", phoneBounds);
   });
 
   socket.on("setCanvasBounds", function (canvasBounds) {
     if (!isTeacher()) return;
     const roomId = getRoomId();
     rooms.get(roomId).canvasBounds = canvasBounds;
-    socket.to(roomId).broadcast.emit("setCanvasBounds", data);
+    socket.to(roomId).broadcast.emit("setCanvasBounds", canvasBounds);
   });
 
   socket.on("updateImage", function (image) {
