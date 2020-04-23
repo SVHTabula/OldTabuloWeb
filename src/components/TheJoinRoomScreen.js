@@ -34,6 +34,7 @@ export default function TheJoinRoomScreen() {
           />
           <TextField
             label="Join Password"
+            type="password"
             variant="outlined"
             style={{ flexGrow: 1, marginTop: 10 }}
             value={roomPassword}
