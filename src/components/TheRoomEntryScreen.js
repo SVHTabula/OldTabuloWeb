@@ -3,10 +3,13 @@ import { Paper, TextField, Button, DialogTitle } from "@material-ui/core";
 import SocketContext from "../contexts/socket";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import RoomContext from "../contexts/room";
+import UserContext from "../contexts/user";
 
 export default function TheRoomEntryScreen() {
   const { socket } = useContext(SocketContext);
 
+
+  const { setIsTeacher } = useContext(UserContext);
   const { setAdminPassword, setJoinPassword, setRoomId } = useContext(RoomContext);
   const [formRoomId, setFormRoomId] = useState('');
   const [roomPassword, setRoomPassword] = useState('');
@@ -47,6 +50,7 @@ export default function TheRoomEntryScreen() {
             onClick={() => {
               socket.emit('joinRoom', { id: formRoomId, password: roomPassword }, function(result) {
                 if (result.success) {
+                  setIsTeacher(false);
                   setRoomId(formRoomId);
                 } else {
                   setErrorMessage(result.message);
@@ -66,6 +70,7 @@ export default function TheRoomEntryScreen() {
                   setRoomId(formRoomId);
                   setJoinPassword(roomPassword);
                   setAdminPassword(result.adminPassword);
+                  setIsTeacher(true);
                 } else {
                   setErrorMessage(result.message);
                 }

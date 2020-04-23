@@ -12,7 +12,7 @@ import { v4 } from "uuid";
 import useLoadImage from "./hooks/useLoadImage";
 import TheRoomEntryScreen from "./components/TheRoomEntryScreen";
 
-const socket = io("http://localhost:4000");
+const socket = io("https://tabula-web.herokuapp.com");
 
 export default function App() {
   const userId = useRef(v4());
@@ -23,6 +23,7 @@ export default function App() {
   const [roomId, setRoomId] = useState('');
   const [joinPassword, setJoinPassword] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
+  const [isTeacher, setIsTeacher] = useState(false);
 
   useEffect(() => {
     if (roomId) {
@@ -34,7 +35,7 @@ export default function App() {
         lineColorRef.current = color;
       });
 
-      window.addEventListener("resize", () => {
+      function handleResize() {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         const imageData = canvas.toDataURL();
@@ -49,7 +50,10 @@ export default function App() {
           height: window.innerHeight,
           width: window.innerWidth,
         });
-      });
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
     }
   });
 
@@ -58,7 +62,11 @@ export default function App() {
       <div className="main">
         <SocketContext.Provider value={{ socket }}>
           <UserContext.Provider
-            value={{ userId: userId.current }}
+            value={{
+              userId: userId.current,
+              isTeacher,
+              setIsTeacher
+            }}
           >
             <CanvasContext.Provider
               value={{
