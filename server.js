@@ -23,7 +23,7 @@ app.get("/", function (req, res) {
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
-let canvasBounds = {x: 100, y: 100};
+let canvasBounds = {width: 100, height: 100};
 let phoneBounds = {x: 0, y: 0, width: 100, height: 100};
 let color = '#ffffff';
 let width = 5;
