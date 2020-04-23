@@ -4,7 +4,7 @@ import SocketContext from "../contexts/socket";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import RoomContext from "../contexts/room";
 
-export default function TheJoinRoomScreen() {
+export default function TheRoomEntryScreen() {
   const { socket } = useContext(SocketContext);
 
   const { setAdminPassword, setJoinPassword, setRoomId } = useContext(RoomContext);

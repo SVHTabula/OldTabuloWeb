@@ -10,7 +10,7 @@ import RoomContext from "./contexts/room";
 import io from "socket.io-client";
 import { v4 } from "uuid";
 import useLoadImage from "./hooks/useLoadImage";
-import TheJoinRoomScreen from "./components/TheJoinRoomScreen";
+import TheRoomEntryScreen from "./components/TheRoomEntryScreen";
 
 const socket = io("http://localhost:4000");
 
@@ -77,7 +77,7 @@ export default function App() {
                     <TheDrawingCanvas />
                   </>
                 ) : (
-                  <TheJoinRoomScreen />
+                  <TheRoomEntryScreen />
                 )}
               </RoomContext.Provider>
             </CanvasContext.Provider>
