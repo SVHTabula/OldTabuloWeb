@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const { v4 } = require('uuid');
 const path = require("path");
 const app = express();
 
@@ -23,91 +24,129 @@ app.get("/", function (req, res) {
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
-let canvasBounds = {width: 100, height: 100};
-let phoneBounds = {x: 0, y: 0, width: 100, height: 100};
-let color = '#ffffff';
-let width = 5;
-
 const rooms = {
   /*
     id: {
       teacher: 'socketId',
+      teacherDevice: 'socketId'
+      joinPassword: joinPassword,
+      adminPassword: adminPassword
       members: ['socketId', 'socketId']
     }
   */
 };
 
+const socketToRoom = new Map();
+
 io.on("connection", (socket) => {
-  socket.on('joinRoom', ({id, password}, fn) => {
-    if (rooms[id] && rooms[id].joinPassword === password) {
-      socket.join(id);
-      rooms[id].students.push(socket.id);
+  socket.on('joinRoom', ({id: roomId, password: roomPassword}, fn) => {
+    if (rooms[roomId] && rooms[roomId].joinPassword === roomPassword) {
+      const room = rooms[roomId];
+      socket.join(roomId);
+      room.students.push(socket.id);
+      socketToRoom.set(socket.id, roomId);
+      setupCanvas(room);
       fn({success: true});
     } else {
       fn({success: false, message: 'Invalid room ID or incorrect password.'});
     }
   });
 
-  socket.on('createRoom', ({id, joinPassword, adminPassword}, fn) => {
-    if (rooms[id]) {
+  socket.on('createRoom', ({id: roomId, joinPassword}, fn) => {
+    if (rooms[roomId]) {
       fn({success: false, message: 'Room already exists.'});
     } else {
-      socket.join(id);
-      rooms[id] = {
+      socket.join(roomId);
+      socketToRoom.set(socket.id, roomId);
+      const adminPassword = v4().slice(6);
+      rooms[roomId] = {
         teacher: socket.id,
+        teacherDevice: null,
         students: [],
         joinPassword: joinPassword,
-        adminPassword: adminPassword
+        adminPassword: adminPassword,
+        color: '#ffffff',
+        width: 5,
+        canvasBounds: {width: 100, height: 100},
+        phoneBounds: {x: 0, y: 0, width: 100, height: 100}
       };
-      fn({success: true});
+      fn({success: true, adminPassword});
     }
   });
 
-  socket.on('connectToRoom', ({id, password}, fn) => {
-    if (rooms[id] && rooms[id].adminPassword === password) {
-      socket.join(id);
+  function setupCanvas(room) {
+    socket.emit("setCanvasBounds", room.canvasBounds);
+    socket.emit("setPhoneBounds", room.phoneBounds);
+    socket.emit("setColor", room.color);
+    socket.emit("setWidth", room.width)
+  }
+
+  socket.on('connectToRoom', ({id: roomId, password}, fn) => {
+    if (rooms[roomId] && rooms[roomId].adminPassword === password) {
+      const room = rooms[roomId];
+      socket.join(roomId);
+      room.teacherDevice = socket.id;
+      socketToRoom.set(socket.id, roomId);
+      setupCanvas(room);
       fn({success: true});
     } else {
       fn({success: false, message: 'Invalid room ID or incorrect password.'});
     }
   });
 
-  socket.emit("setCanvasBounds", canvasBounds);
-  socket.emit("setPhoneBounds", phoneBounds);
-  socket.emit("setColor", color);
-  socket.emit("setWidth", width);
+  function getRoomId() {
+    return socketToRoom[socket.id];
+  }
 
-  socket.on("paint", function (data) {
-    socket.broadcast.emit("paint", data);
+  function isTeacher() {
+    const room = rooms[getRoomId()];
+    return room.teacher === socket.id || room.teacherDevice === socket.id;
+  }
+
+  socket.on("paint", function (lines) {
+    if (!isTeacher()) return;
+    socket.to(getRoomId()).broadcast.emit("paint", lines);
   });
 
-  socket.on("setColor", function (data) {
-    color = data;
-    socket.broadcast.emit("setColor", data);
+  socket.on("setColor", function (color) {
+    if (!isTeacher()) return;
+    const roomId = getRoomId();
+    rooms[roomId].color = color;
+    socket.to(roomId).broadcast.emit("setColor", color);
   });
 
-  socket.on("setWidth", function (data) {
-    width = data;
-    socket.broadcast.emit("setWidth", data);
+  socket.on("setWidth", function (width) {
+    if (!isTeacher()) return;
+    const roomId = getRoomId();
+    rooms[roomId].width = width;
+    socket.to(roomId).broadcast.emit("setWidth", width);
   });
 
-  socket.on("setPhoneBounds", function (data) {
-    phoneBounds = data;
-    socket.broadcast.emit("setPhoneBounds", data);
+  socket.on("setPhoneBounds", function (phoneBounds) {
+    if (!isTeacher()) return;
+    const roomId = getRoomId();
+    rooms[roomId].phoneBounds = phoneBounds;
+    socket.to(roomId).broadcast.emit("setPhoneBounds", data);
   });
 
-  socket.on("setCanvasBounds", function (data) {
-    canvasBounds = data;
-    socket.broadcast.emit("setCanvasBounds", data);
+  socket.on("setCanvasBounds", function (canvasBounds) {
+    if (!isTeacher()) return;
+    const roomId = getRoomId();
+    rooms[roomId].canvasBounds = canvasBounds;
+    socket.to(roomId).broadcast.emit("setCanvasBounds", data);
   });
 
-  socket.on("updateImage", function (data) {
-    socket.broadcast.emit("updateImage", data);
+  socket.on("updateImage", function (image) {
+    if (!isTeacher()) return;
+    const roomId = getRoomId();
+    socket.to(roomId).broadcast.emit("updateImage", image);
   });
 
   socket.on("clearCanvas", function (data) {
-    socket.broadcast.emit("clearCanvas", data);
-  })
+    if (!isTeacher()) return;
+    const roomId = getRoomId();
+    socket.to(roomId).broadcast.emit("clearCanvas", data);
+  });
 });
 
 const port = process.env.PORT || 4000;
