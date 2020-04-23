@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, Fragment } from "react";
 import "./App.css";
 import TheDrawingCanvas, { canvasRef } from "./components/TheDrawingCanvas";
+import TheDrawingCanvasSaveButton from "./components/TheDrawingCanvasSaveButton";
 import TheSidebar from "./components/TheSidebar";
 import SocketContext from "./contexts/socket";
 import UserContext from "./contexts/user";
@@ -59,7 +60,7 @@ export default function App() {
 
   return (
     <Fragment>
-      <div className="main">
+      <div className="main" style={{position: 'relative'}}>
         <SocketContext.Provider value={{ socket }}>
           <UserContext.Provider
             value={{
@@ -80,7 +81,11 @@ export default function App() {
                 adminPassword, setAdminPassword
               }}>
                 {roomId && isTeacher ? <TheSidebar/> : null }
-                {roomId ? <TheDrawingCanvas /> : null }
+                {roomId ?
+                  <>
+                    <TheDrawingCanvas />
+                    <TheDrawingCanvasSaveButton />
+                  </> : null }
                 {!roomId ? <TheRoomEntryScreen /> : null }
               </RoomContext.Provider>
             </CanvasContext.Provider>

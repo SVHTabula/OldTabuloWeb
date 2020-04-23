@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import SocketContext from "../contexts/socket";
 import { canvasRef } from "./TheDrawingCanvas";
 import useLoadImage from "../hooks/useLoadImage";
-import { Button, IconButton } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 export default function TheSidebarImageSaver() {
   const { socket } = useContext(SocketContext);

@@ -12,7 +12,7 @@ export default function TheDrawingCanvas() {
   const isPaintingRef = useRef(false);
   const prevPosRef = useRef({ offsetX: 0, offsetY: 0 });
   const { socket } = useContext(SocketContext);
-  const { userId } = useContext(UserContext);
+  const { userId, isTeacher } = useContext(UserContext);
   const { lineWidthRef, lineColorRef } = useContext(CanvasContext);
 
   function paint(prevPos, currPos) {
@@ -40,12 +40,26 @@ export default function TheDrawingCanvas() {
         });
       }
     });
+
+    socket.on("setPhoneBounds", (bounds) => {
+      const { x, y, width, height } = bounds;
+      phoneOutlineRef.current.style.left = `${x}px`;
+      phoneOutlineRef.current.style.top = `${y}px`;
+      phoneOutlineRef.current.style.width = `${width}px`;
+      phoneOutlineRef.current.style.height = `${height}px`;
+    });
   });
 
   useEffect(() => {
+    if (!isTeacher) return;
     const canvas = canvasRef.current;
-    canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    socket.emit("setCanvasBounds", {
+      height: canvas.height,
+      width: canvas.width,
+    });
 
     const ctx = canvas.getContext("2d");
     ctx.lineJoin = "round";
@@ -82,14 +96,6 @@ export default function TheDrawingCanvas() {
 
     canvas.addEventListener("mouseleave", endPaintEvent);
     canvas.addEventListener("mouseup", endPaintEvent);
-
-    socket.on("setPhoneBounds", (bounds) => {
-      const { x, y, width, height } = bounds;
-      phoneOutlineRef.current.style.left = `${x}px`;
-      phoneOutlineRef.current.style.top = `${y}px`;
-      phoneOutlineRef.current.style.width = `${width}px`;
-      phoneOutlineRef.current.style.height = `${height}px`;
-    });
   });
 
   return (
