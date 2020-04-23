@@ -24,7 +24,7 @@ export default function TheSidebarWidthSlider() {
   return (
     <div>
       <Slider onChange={(value) => setLineWidth(value)} />
-      <p>Font size: {lineWidth}px</p>
+      <p>Brush size: {lineWidth+1}px</p>
     </div>
   );
 }
