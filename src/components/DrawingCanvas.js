@@ -78,7 +78,7 @@ export default function DrawingCanvas() {
         socket.emit("paint", { line, userId });
         line.splice(0, line.length);
       }
-    };
+    }
 
     canvas.addEventListener('mouseleave', endPaintEvent);
     canvas.addEventListener('mouseup', endPaintEvent);
@@ -86,6 +86,10 @@ export default function DrawingCanvas() {
       const canvas = canvasRef.current;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      socket.emit('setCanvasBounds', {
+        height: window.innerHeight,
+        width: window.innerWidth
+      })
     });
   }, []);
 
