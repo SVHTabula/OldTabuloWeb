@@ -50,7 +50,7 @@ export default function TheSidebarImageSaver() {
       <input id="fileItem" type="file" onChange={() => openImage()} />
       <br />
       <button onClick={() => saveImage()}>
-        Savef
+        Save
       </button>
     </div>
   );
