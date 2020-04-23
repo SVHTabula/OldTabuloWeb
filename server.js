@@ -24,24 +24,20 @@ app.get("/", function (req, res) {
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
-const rooms = {
-  /*
-    id: {
-      teacher: 'socketId',
-      teacherDevice: 'socketId'
-      joinPassword: joinPassword,
-      adminPassword: adminPassword
-      members: ['socketId', 'socketId']
-    }
-  */
-};
-
 const socketToRoom = new Map();
+const rooms = new Map();
 
 io.on("connection", (socket) => {
+  socket.on('disconnect', () => {
+    const room = socketToRoom[socket.id];
+    if (room && room.teacher === socket.id) {
+      rooms.delete(socket.id);
+    }
+  });
+
   socket.on('joinRoom', ({id: roomId, password: roomPassword}, fn) => {
-    if (rooms[roomId] && rooms[roomId].joinPassword === roomPassword) {
-      const room = rooms[roomId];
+    const room = rooms.get(roomId);
+    if (room && room.joinPassword === roomPassword) {
       socket.join(roomId);
       room.students.push(socket.id);
       socketToRoom.set(socket.id, roomId);
@@ -53,13 +49,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on('createRoom', ({id: roomId, joinPassword}, fn) => {
-    if (rooms[roomId]) {
+    if (rooms.has(roomId)) {
       fn({success: false, message: 'Room already exists.'});
     } else {
       socket.join(roomId);
       socketToRoom.set(socket.id, roomId);
       const adminPassword = v4().slice(-6);
-      rooms[roomId] = {
+      rooms.set(roomId, {
         teacher: socket.id,
         teacherDevice: null,
         students: [],
@@ -69,7 +65,7 @@ io.on("connection", (socket) => {
         width: 5,
         canvasBounds: {width: 100, height: 100},
         phoneBounds: {x: 0, y: 0, width: 100, height: 100}
-      };
+      });
       fn({success: true, adminPassword});
     }
   });
@@ -82,8 +78,8 @@ io.on("connection", (socket) => {
   }
 
   socket.on('connectToRoom', ({id: roomId, password}, fn) => {
-    if (rooms[roomId] && rooms[roomId].adminPassword === password) {
-      const room = rooms[roomId];
+    const room = rooms.get(roomId);
+    if (room && room.adminPassword === password) {
       socket.join(roomId);
       room.teacherDevice = socket.id;
       socketToRoom.set(socket.id, roomId);
@@ -95,11 +91,11 @@ io.on("connection", (socket) => {
   });
 
   function getRoomId() {
-    return socketToRoom[socket.id];
+    return socketToRoom.get(socket.id);
   }
 
   function isTeacher() {
-    const room = rooms[getRoomId()];
+    const room = rooms.get(getRoomId());
     return room.teacher === socket.id || room.teacherDevice === socket.id;
   }
 
@@ -111,41 +107,39 @@ io.on("connection", (socket) => {
   socket.on("setColor", function (color) {
     if (!isTeacher()) return;
     const roomId = getRoomId();
-    rooms[roomId].color = color;
+    rooms.get(roomId).color = color;
     socket.to(roomId).broadcast.emit("setColor", color);
   });
 
   socket.on("setWidth", function (width) {
     if (!isTeacher()) return;
     const roomId = getRoomId();
-    rooms[roomId].width = width;
+    rooms.get(roomId).width = width;
     socket.to(roomId).broadcast.emit("setWidth", width);
   });
 
   socket.on("setPhoneBounds", function (phoneBounds) {
     if (!isTeacher()) return;
     const roomId = getRoomId();
-    rooms[roomId].phoneBounds = phoneBounds;
+    rooms.get(roomId).phoneBounds = phoneBounds;
     socket.to(roomId).broadcast.emit("setPhoneBounds", data);
   });
 
   socket.on("setCanvasBounds", function (canvasBounds) {
     if (!isTeacher()) return;
     const roomId = getRoomId();
-    rooms[roomId].canvasBounds = canvasBounds;
+    rooms.get(roomId).canvasBounds = canvasBounds;
     socket.to(roomId).broadcast.emit("setCanvasBounds", data);
   });
 
   socket.on("updateImage", function (image) {
     if (!isTeacher()) return;
-    const roomId = getRoomId();
-    socket.to(roomId).broadcast.emit("updateImage", image);
+    socket.to(getRoomId()).broadcast.emit("updateImage", image);
   });
 
   socket.on("clearCanvas", function (data) {
     if (!isTeacher()) return;
-    const roomId = getRoomId();
-    socket.to(roomId).broadcast.emit("clearCanvas", data);
+    socket.to(getRoomId()).broadcast.emit("clearCanvas", data);
   });
 });
 

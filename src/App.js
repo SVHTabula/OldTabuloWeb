@@ -12,7 +12,7 @@ import { v4 } from "uuid";
 import useLoadImage from "./hooks/useLoadImage";
 import TheRoomEntryScreen from "./components/TheRoomEntryScreen";
 
-const socket = io("http://localhost:4000");
+const socket = io("https://tabula-web.herokuapp.com");
 
 export default function App() {
   const userId = useRef(v4());
