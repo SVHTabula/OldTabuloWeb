@@ -1,22 +1,22 @@
-import React, { useState, useRef, useEffect, Fragment } from 'react';
-import './App.css';
-import TheDrawingCanvas, {canvasRef} from './components/TheDrawingCanvas';
-import TheSidebar from './components/TheSidebar';
-import SocketContext from './contexts/socket';
-import UserContext from './contexts/user';
+import React, { useState, useRef, useEffect, Fragment } from "react";
+import "./App.css";
+import TheDrawingCanvas, { canvasRef } from "./components/TheDrawingCanvas";
+import TheSidebar from "./components/TheSidebar";
+import SocketContext from "./contexts/socket";
+import UserContext from "./contexts/user";
 import CanvasContext from "./contexts/canvas";
 
 import io from "socket.io-client";
-import { v4 } from 'uuid';
+import { v4 } from "uuid";
 import useLoadImage from "./hooks/useLoadImage";
 import TheAccountDialog from "./components/TheAccountDialog";
 
-const socket = io('https://tabula-web.herokuapp.com');
+const socket = io("https://tabula-web.herokuapp.com");
 
 export default function App() {
   const userId = useRef(v4());
   const lineWidthRef = useRef(5);
-  const lineColorRef = useRef('#ffffff');
+  const lineColorRef = useRef("#ffffff");
   const loadImage = useLoadImage(canvasRef);
 
   const [joinedRoom, setJoinedRoom] = useState(false);
@@ -48,24 +48,32 @@ export default function App() {
         });
       });
     }
+    if (joinedRoom) {
+      socket.emit("joinRoom", joinedRoom, function (data) {});
+    }
   });
 
   return (
     <Fragment>
       <div className="main">
-        <SocketContext.Provider value={{socket}}>
-          <UserContext.Provider value={{userId: userId.current, joinedRoom, setJoinedRoom}}>
-            <CanvasContext.Provider value={{
-              lineWidthRef,
-              lineColorRef
-            }}>
-              {joinedRoom ?
+        <SocketContext.Provider value={{ socket }}>
+          <UserContext.Provider
+            value={{ userId: userId.current, joinedRoom, setJoinedRoom }}
+          >
+            <CanvasContext.Provider
+              value={{
+                lineWidthRef,
+                lineColorRef,
+              }}
+            >
+              {joinedRoom ? (
                 <>
                   <TheSidebar />
                   <TheDrawingCanvas />
-                </> :
+                </>
+              ) : (
                 <TheAccountDialog />
-              }
+              )}
             </CanvasContext.Provider>
           </UserContext.Provider>
         </SocketContext.Provider>
