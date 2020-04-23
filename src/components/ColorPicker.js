@@ -71,7 +71,7 @@ export default function ColorPicker() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h3 style={{ textAlign: 'center' }}>Tabulaa</h3>
+      <h3 style={{ textAlign: 'center' }}>Tabdulaa</h3>
       <div>
         <Slider onChange={(value) => setLineWidth(value)} />
         <p>Font size: {lineWidth}px</p>
@@ -84,6 +84,8 @@ export default function ColorPicker() {
       </div>
       <input id="fileItem" type="file" onChange={() => openImage()} />
       <a id="downloadLink" style={{ display: "hidden" }}></a>
+      <br/>
+      Eraser
       <br/>
       <button onClick={() => saveImage()}>
         Save
