@@ -38,22 +38,37 @@ const rooms = {
 };
 
 io.on("connection", (socket) => {
-  socket.on('joinRoom', (room, fn) => {
-    if (rooms[room]) {
-      socket.join(room);
-      rooms[room].students.push(socket.id);
+  socket.on('joinRoom', ({id, password}, fn) => {
+    if (rooms[id] && rooms[id].joinPassword === password) {
+      socket.join(id);
+      rooms[id].students.push(socket.id);
       fn({success: true});
     }
-    fn({success: false, message: 'Room not found.'});
+    fn({success: false, message: 'Invalid room ID or incorrect password.'});
   });
 
-  socket.on('createRoom', (room, fn) => {
-    if (rooms[room]) {
+  socket.on('createRoom', ({id, joinPassword, adminPassword}, fn) => {
+    if (rooms[id]) {
       fn({success: false, message: 'Room already exists.'});
+      return;
     }
-    socket.join(room);
-    rooms[room] = {teacher: socket.id, students: []};
+    socket.join(id);
+    rooms[id] = {
+      teacher: socket.id,
+      students: [],
+      joinPassword: joinPassword,
+      adminPassword: adminPassword
+    };
     fn({success: true});
+  });
+
+  socket.on('connectToRoom', ({id, password}, fn) => {
+    if (rooms[id] && rooms[id].adminPassword === password) {
+      socket.join(id);
+      rooms[id].students.push(socket.id);
+      fn({success: true});
+    }
+    fn({success: false, message: 'Invalid room ID or incorrect password.'});
   });
 
   socket.emit("setCanvasBounds", canvasBounds);
