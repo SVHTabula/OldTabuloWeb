@@ -33,7 +33,7 @@ export default function TheSidebarCanvasResizer() {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
       <div style={{display: 'flex'}}>
         <TextField
           label="Width"
@@ -43,7 +43,7 @@ export default function TheSidebarCanvasResizer() {
           value={width}
           onChange={(e) => setWidth(e.target.value)}
         />
-      
+
         <div style={{alignSelf: 'center'}}>x</div>
         <TextField
           label="Height"

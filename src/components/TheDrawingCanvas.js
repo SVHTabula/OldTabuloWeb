@@ -69,6 +69,10 @@ export default function TheDrawingCanvas() {
       const { offsetX, offsetY } = nativeEvent;
       isPaintingRef.current = true;
       prevPosRef.current = { offsetX, offsetY };
+      line.push({
+        start: { ...prevPosRef.current },
+        stop: { ...prevPosRef.current }
+      });
     });
 
     canvas.addEventListener("mousemove", (nativeEvent) => {
@@ -102,13 +106,17 @@ export default function TheDrawingCanvas() {
       width: '100vw',
       height: '100vh',
       overflow: 'auto',
-      border: '1px solid black'
     }}>
       <canvas
         ref={canvasRef}
         id="drawingCanvas"
         width={window.innerWidth}
         height={window.innerHeight}
+        style={{
+          borderWidth: 1,
+          borderColor: 'black',
+          borderStyle: 'solid'
+        }}
       />
       <TheDrawingCanvasPhoneOutline />
     </div>
