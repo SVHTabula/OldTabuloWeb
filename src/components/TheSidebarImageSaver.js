@@ -12,6 +12,7 @@ export default function TheSidebarImageSaver() {
     socket.on("clearCanvas", () => {
       clearCanvas();
     });
+
   });
 
   function openImage() {

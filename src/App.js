@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect, Fragment } from "react";
 import "./App.css";
-import TheDrawingCanvas from "./components/TheDrawingCanvas";
+import TheDrawingCanvas, {canvasRef} from "./components/TheDrawingCanvas";
 import TheDrawingCanvasSaveButton from "./components/TheDrawingCanvasSaveButton";
 import TheSidebar from "./components/TheSidebar";
 import SocketContext from "./contexts/socket";
 import UserContext from "./contexts/user";
 import CanvasContext from "./contexts/canvas";
 import RoomContext from "./contexts/room";
+import useLoadImage from "./hooks/useLoadImage";
 
 import io from "socket.io-client";
 import { v4 } from "uuid";
@@ -24,6 +25,8 @@ export default function App() {
   const [adminPassword, setAdminPassword] = useState("");
   const [isTeacher, setIsTeacher] = useState(false);
 
+  const loadImage = useLoadImage(canvasRef);
+
   useEffect(() => {
     if (roomId) {
       socket.on("setWidth", (width) => {
@@ -33,6 +36,10 @@ export default function App() {
       socket.on("setColor", (color) => {
         lineColorRef.current = color;
       });
+
+      socket.on("updateImage", (imageUrl) => {
+        loadImage(imageUrl);
+      })
     }
   });
 

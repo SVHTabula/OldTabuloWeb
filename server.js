@@ -148,6 +148,13 @@ io.on("connection", (socket) => {
     if (!isTeacher()) return;
     socket.to(getRoomId()).broadcast.emit("clearCanvas", data);
   });
+
+  socket.on("setIsBlackboardMode", function (isBlackboardMode) {
+    if (!isTeacher()) return;
+    socket.to(getRoomId()).broadcast.emit("setIsBlackboardMode", isBlackboardMode);
+  });
+
+
 });
 
 const port = process.env.PORT || 4000;
