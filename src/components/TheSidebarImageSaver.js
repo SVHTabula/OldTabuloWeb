@@ -62,7 +62,7 @@ export default function TheSidebarImageSaver() {
         onChange={() => openImage()}
         style={{ display: "none" }}
       />
-      <div style={{ display: "flex", flexDirection: "column", marginTop: 20, color: 'var(--background)' }}>
+      <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
         <Button
           onClick={() => clearCanvas()}
           variant="outlined"
