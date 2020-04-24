@@ -21,7 +21,6 @@ export default function TheSidebarRoomInformation() {
         InputProps={{
           readOnly: true,
         }}
-        style = {{color: 'var(--text2)'}}
       />
       <h3>Join Password (Share with students)</h3>
       <TextField
