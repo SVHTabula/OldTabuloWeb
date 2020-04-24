@@ -1,36 +1,14 @@
-# React-Paintapp
-Realtime paint collaboration using Pusher and React
-
-[View tutorial](https://pusher.com/tutorials/live-paint-react)
-
-## Prerequisites
-- [React](https://reactjs.org/)
-- [Express](https://expressjs.com/)
-- [Pusher](https://pusher.com)
-- A [Pusher account](https://pusher.com/signup) and [Pusher app credentials](http://dashboard.pusher.com/)
-
+# Tabula Web App
+Hackathon Project For Silicon Valley Hacks 2020
+[View Video Demonstration](https://www.youtube.com/watch?v=ki2QPCBCLu0)
 
 ## Getting started
 - Clone the project and install dependencies:
-- Create a file named `.env`. Update the `.env` file with the content below:
-
-```
-PUSHER_APP_ID=app-id
-PUSHER_APP_KEY=app-key
-PUSHER_APP_SECRET=app-secret
-```
-
-> **Note**: ensure to replace the placeholder values with your pusher `appId`, `key` and `secret`.
-
-- Clone the repo
-- Enter the project folder
-- Run npm install 
-- Start server by running `node server`
-- Run `yarn start` to start the dev server 
-
+- run npm i on your terminal
+- run react-scripts start
 
 ## Built With
 
 * [React](https://reactjs.org/) 
-* [Angular](https://angular.io)
+* [socket.io](https://socket.io/)
 * [Express](https://expressjs.com/)
