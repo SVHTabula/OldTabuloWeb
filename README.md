@@ -9,6 +9,6 @@ Hackathon Project For Silicon Valley Hacks 2020
 
 ## Built With
 
-* [React](https://reactjs.org/) 
+* [React Js](https://reactjs.org/) 
 * [socket.io](https://socket.io/)
 * [Express](https://expressjs.com/)
