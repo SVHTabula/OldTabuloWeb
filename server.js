@@ -29,12 +29,12 @@ const rooms = new Map();
 
 io.on("connection", (socket) => {
   socket.on('disconnect', () => {
-    const room = socketToRoom.get(socket.id);
+    const room = socketToRoom.get(getRoomId());
     if (room && room.teacher === socket.id) {
       for (const socketId of room.students) {
         socket.to(socketId).emit('leaveRoom');
       }
-      rooms.delete(socket.id);
+      rooms.delete(getRoomId());
     }
   });
 

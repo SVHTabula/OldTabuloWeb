@@ -39,25 +39,27 @@ export default function TheSidebarCanvasResizer() {
           label="Width"
           variant="outlined"
           type="number"
-          style={{ flexGrow: 1, marginRight: 5}}
+          style={{ flexGrow: 0.75, marginRight: 5}}
           value={width}
           onChange={(e) => setWidth(e.target.value)}
         />
+
         <div style={{alignSelf: 'center'}}>x</div>
         <TextField
           label="Height"
           variant="outlined"
           type="number"
-          style={{ flexGrow: 1, marginLeft: 5}}
+          style={{ flexGrow: 0.75, marginLeft: 5}}
           value={height}
           onChange={(e) => setHeight(e.target.value)}
         />
       </div>
+      <br></br>
       <Button
         onClick={() => saveBounds(width, height)}
         variant="outlined"
         color="primary"
-        style={{ flexGrow: 1, margin: 10 }}
+        style={{ flexGrow: 1, margin: 5 }}
       >
         Resize Canvas
       </Button>
@@ -65,7 +67,7 @@ export default function TheSidebarCanvasResizer() {
         onClick={() => saveBounds(window.innerWidth, window.innerHeight)}
         variant="outlined"
         color="primary"
-        style={{ flexGrow: 1, marginBottom: 10 }}
+        style={{ flexGrow: 1, margin: 5 }}
       >
         Resize Canvas to Window
       </Button>

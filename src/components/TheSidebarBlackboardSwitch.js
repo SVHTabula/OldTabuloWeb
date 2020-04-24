@@ -18,13 +18,14 @@ export default function TheSidebarBlackboardSwitch() {
 
   return (
     <div>
-      <strong>Warning: Toggling the switch erases all content on the canvas.</strong><br/>
+      <br></br>
       Blackboard Mode:
       <Switch
         checked={isBlackboardMode}
         onChange={() => setIsBlackboardMode(!isBlackboardMode)}
         name="Blackboard Mode"
       />
+      <br></br>
     </div>
   );
 }
