@@ -15,8 +15,10 @@ export default function TheSidebarRoomInformation() {
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', color: 'var(--text2)'}}>
+            <h4>User Information</h4>
+
       <TextField
-        label="Room ID (Share with students)"
+        label="Room ID"
         defaultValue={roomId}
         InputProps={{
           readOnly: true,
@@ -25,7 +27,7 @@ export default function TheSidebarRoomInformation() {
         }
         }}
       />
-      <h3>Join Password (Share with students)</h3>
+      <br></br>
       <TextField
         type={showJoinPassword ? 'text' : 'password'}
         label="Join Password"
@@ -49,7 +51,7 @@ export default function TheSidebarRoomInformation() {
         style={{marginBottom: 20}}
       />
       <TextField
-        label="Admin Password (DON'T SHARE)"
+        label="Admin Password"
         type={showAdminPassword ? 'text': 'password'}
         value={adminPassword}
         InputProps={{

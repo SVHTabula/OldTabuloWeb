@@ -14,6 +14,7 @@ export default function TheSidebar() {
       <TheSidebarWidthSlider />
       <TheSidebarColorPicker />
       <TheSidebarImageSaver />
+      <br></br>
       <TheSidebarCanvasResizer />
       <TheSidebarBlackboardSwitch />
       <div style={{marginTop: 'auto'}}>
