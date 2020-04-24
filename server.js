@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
         students: [],
         joinPassword: joinPassword,
         adminPassword: adminPassword,
-        color: '#ffffff',
+        color: '#000000',
         width: 5,
         canvasBounds: {width: 100, height: 100},
         phoneBounds: {x: 0, y: 0, width: 100, height: 100}

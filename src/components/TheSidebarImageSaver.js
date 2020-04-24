@@ -67,11 +67,11 @@ export default function TheSidebarImageSaver() {
           onClick={() => clearCanvas()}
           variant="outlined"
           color="primary"
-          style={{ flexGrow: 1, margin: 10 }}
+          style={{ flexGrow: 1, margin: 5 }}
         >
           New
         </Button>
-        <label htmlFor="fileItem" style={{ display: "flex", flexGrow: 1, margin: 10, color: 'var(--background)' }}>
+        <label htmlFor="fileItem" style={{ display: "flex", flexGrow: 1, margin: 10 }}>
           <Button
             component="div"
             variant="contained"
@@ -85,7 +85,7 @@ export default function TheSidebarImageSaver() {
           onClick={() => saveImage()}
           variant="contained"
           color="secondary"
-          style={{ flexGrow: 1, margin: 10 }}
+          style={{ flexGrow: 1, margin: 5 }}
         >
           Save
         </Button>

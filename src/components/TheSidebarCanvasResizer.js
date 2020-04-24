@@ -33,7 +33,7 @@ export default function TheSidebarCanvasResizer() {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
       <div style={{display: 'flex'}}>
         <TextField
           label="Width"
@@ -65,7 +65,7 @@ export default function TheSidebarCanvasResizer() {
         onClick={() => saveBounds(window.innerWidth, window.innerHeight)}
         variant="outlined"
         color="primary"
-        style={{ flexGrow: 1, margin: 10 }}
+        style={{ flexGrow: 1, marginBottom: 10 }}
       >
         Resize Canvas to Window
       </Button>
