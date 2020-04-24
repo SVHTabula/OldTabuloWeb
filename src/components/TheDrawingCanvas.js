@@ -102,7 +102,7 @@ export default function TheDrawingCanvas() {
       width: '100vw',
       height: '100vh',
       overflow: 'auto',
-      border: '1px solid'
+      border: '1px solid black'
     }}>
       <canvas
         ref={canvasRef}

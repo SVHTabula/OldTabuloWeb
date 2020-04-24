@@ -15,7 +15,10 @@ export default function TheSidebarCanvasResizer() {
 
   const { lineColorRef, lineWidthRef } = useContext(CanvasContext);
 
-  function saveBounds() {
+  function saveBounds(width, height) {
+    setWidth(width);
+    setHeight(height);
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const imageData = canvas.toDataURL();
@@ -51,12 +54,20 @@ export default function TheSidebarCanvasResizer() {
         />
       </div>
       <Button
-        onClick={saveBounds}
+        onClick={() => saveBounds(width, height)}
         variant="outlined"
         color="primary"
         style={{ flexGrow: 1, margin: 10 }}
       >
         Resize Canvas
+      </Button>
+      <Button
+        onClick={() => saveBounds(window.innerWidth, window.innerHeight)}
+        variant="outlined"
+        color="primary"
+        style={{ flexGrow: 1, margin: 10 }}
+      >
+        Resize Canvas to Window
       </Button>
     </div>
   );
