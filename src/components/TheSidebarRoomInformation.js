@@ -50,7 +50,7 @@ export default function TheSidebarRoomInformation() {
       />
       <TextField
         label="Admin Password (DON'T SHARE)"
-        type={showAdminPassword ? 'text' : 'password'}
+        type={showAdminPassword ? 'text': 'password'}
         value={adminPassword}
         InputProps={{
           style: {
