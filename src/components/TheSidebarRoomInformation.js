@@ -20,6 +20,9 @@ export default function TheSidebarRoomInformation() {
         defaultValue={roomId}
         InputProps={{
           readOnly: true,
+          style: {
+            color: "var(--text2)"
+        }
         }}
       />
       <h3>Join Password (Share with students)</h3>
@@ -28,6 +31,9 @@ export default function TheSidebarRoomInformation() {
         label="Join Password"
         value={joinPassword}
         InputProps={{
+          style: {
+            color: "var(--text2)"
+        },
           readOnly: true,
           endAdornment: (
             <InputAdornment position="end">
@@ -44,9 +50,12 @@ export default function TheSidebarRoomInformation() {
       />
       <TextField
         label="Admin Password (DON'T SHARE)"
-        type={showAdminPassword ? 'text' : 'password'}
+        type={showAdminPassword ? 'text': 'password'}
         value={adminPassword}
         InputProps={{
+          style: {
+            color: "var(--text2)"
+        },
           readOnly: true,
           endAdornment: (
             <InputAdornment position="end">
