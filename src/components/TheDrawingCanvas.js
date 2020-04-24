@@ -22,8 +22,11 @@ export default function TheDrawingCanvas() {
     const { offsetX, offsetY } = currPos;
     const { offsetX: x, offsetY: y } = prevPos;
 
+
     const ctx = canvasRef.current.getContext("2d");
     ctx.beginPath();
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
     ctx.strokeStyle = lineColorRef.current;
     ctx.lineWidth = lineWidthRef.current;
     ctx.moveTo(x, y);
