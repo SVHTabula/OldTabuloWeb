@@ -11,6 +11,7 @@ export default function TheSidebar() {
   return (
     <div id="sidebar" style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
       <TheSidebarTitle />
+      <br></br>
       <TheSidebarWidthSlider />
       <TheSidebarColorPicker />
       <TheSidebarImageSaver />
