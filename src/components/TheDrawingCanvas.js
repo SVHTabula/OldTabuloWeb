@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 import TheDrawingCanvasPhoneOutline, { phoneOutlineRef } from "./TheDrawingCanvasPhoneOutline";
+import useLoadImage from "../hooks/useLoadImage";
 
 import SocketContext from "../contexts/socket";
 import UserContext from "../contexts/user";
@@ -14,6 +15,8 @@ export default function TheDrawingCanvas() {
   const { socket } = useContext(SocketContext);
   const { userId, isTeacher } = useContext(UserContext);
   const { lineWidthRef, lineColorRef } = useContext(CanvasContext);
+
+  const loadImage = useLoadImage(canvasRef);
 
   function paint(prevPos, currPos) {
     const { offsetX, offsetY } = currPos;
@@ -48,6 +51,19 @@ export default function TheDrawingCanvas() {
       phoneOutlineRef.current.style.width = `${width}px`;
       phoneOutlineRef.current.style.height = `${height}px`;
     });
+
+    socket.on("setCanvasBounds", (bounds) => {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      const imageData = canvas.toDataURL();
+      ctx.canvas.width = bounds.width;
+      ctx.canvas.height = bounds.height;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.strokeStyle = lineColorRef.current;
+      ctx.lineWidth = lineWidthRef.current;
+      loadImage(imageData);
+    })
   });
 
   useEffect(() => {
