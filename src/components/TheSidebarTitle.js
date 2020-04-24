@@ -1,5 +1,6 @@
 import React from "react";
+import './title.css';
 
 export default function TheSidebarTitle() {
-  return <h3 id="sidebar-title">Tabula</h3>
+  return <div class="hit-the-floor">Tabula</div>
 }
