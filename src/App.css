@@ -17,7 +17,7 @@ h5 {
 .user {
   padding: 7px 15px;
   border-radius: 4px;
-  color: white;
+  color: var(--background);
   font-size: 13px;
   font-weight: bold;
   background: #EE92C2;
@@ -26,12 +26,12 @@ h5 {
 
 .guest {
   background: #F0C987;
-  color: white;
+  color: var(--background);
 }
 
 #drawingCanvas {
   position: absolute;
-  background: black;
+  background: var(--background);
 }
 
 #drawingCanvasContainer {
@@ -51,7 +51,7 @@ h5 {
 
 #phoneOutline {
   border-width: 1px;
-  border-color: white;
+  border-color: var(--background2);
   border-style: dashed;
   z-index: 1;
   width: 200px;

@@ -15,7 +15,7 @@ export default function TheSidebar() {
       <TheSidebarImageSaver />
       <TheSidebarCanvasResizer />
       <div style={{marginTop: 'auto'}}>
-        <TheSidebarRoomInformation/>
+        <TheSidebarRoomInformation />
       </div>
     </div>
   );

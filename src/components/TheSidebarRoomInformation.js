@@ -14,13 +14,14 @@ export default function TheSidebarRoomInformation() {
   console.log(roomId, joinPassword, adminPassword);
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div style={{display: 'flex', flexDirection: 'column', color: 'var(--text2)'}}>
       <TextField
         label="Room ID (Share with students)"
         defaultValue={roomId}
         InputProps={{
           readOnly: true,
         }}
+        style = {{color: 'var(--text2)'}}
       />
       <h3>Join Password (Share with students)</h3>
       <TextField
