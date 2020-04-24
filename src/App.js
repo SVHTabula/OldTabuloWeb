@@ -17,7 +17,7 @@ const socket = io("https://tabula-web.herokuapp.com");
 export default function App() {
   const userId = useRef(v4());
   const lineWidthRef = useRef(5);
-  const lineColorRef = useRef("#ffffff");
+  const lineColorRef = useRef("#000000");
 
   const [roomId, setRoomId] = useState("");
   const [joinPassword, setJoinPassword] = useState("");

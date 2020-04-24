@@ -3,7 +3,6 @@ import { CompactPicker as SketchPicker } from "react-color";
 import SocketContext from "../contexts/socket";
 import CanvasContext from "../contexts/canvas";
 import { canvasRef } from "./TheDrawingCanvas";
-import { Button } from "@material-ui/core";
 
 export default function TheSidebarColorPicker() {
   const { lineColorRef } = useContext(CanvasContext);
@@ -23,20 +22,10 @@ export default function TheSidebarColorPicker() {
 
   return (
     <div>
-    <SketchPicker
-      color={lineColor}
-      onChangeComplete={(e) => setLineColor(e.hex)}
-    />
-    <label htmlFor="fileItem" style={{ display: "flex", flexGrow: 1, margin: 10 }}>
-          <Button
-            onClick={(e) => setLineColor("#000000")}
-            variant="contained"
-            color="secondary"
-            style={{ flexGrow: 1, margin: 10 }}
-          >
-            Erase
-          </Button>
-        </label>
-        </div>
+      <SketchPicker
+        color={lineColor}
+        onChangeComplete={(e) => setLineColor(e.hex)}
+      />
+    </div>
   );
 }
