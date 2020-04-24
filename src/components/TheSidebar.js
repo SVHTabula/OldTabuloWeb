@@ -4,6 +4,7 @@ import TheSidebarWidthSlider from "./TheSidebarWidthSlider";
 import TheSidebarImageSaver from "./TheSidebarImageSaver";
 import TheSidebarTitle from "./TheSidebarTitle";
 import TheSidebarRoomInformation from "./TheSidebarRoomInformation";
+import TheSidebarCanvasResizer from "./TheSidebarCanvasResizer";
 
 export default function TheSidebar() {
   return (
@@ -12,6 +13,7 @@ export default function TheSidebar() {
       <TheSidebarWidthSlider />
       <TheSidebarColorPicker />
       <TheSidebarImageSaver />
+      <TheSidebarCanvasResizer />
       <div style={{marginTop: 'auto'}}>
         <TheSidebarRoomInformation/>
       </div>

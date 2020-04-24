@@ -53,8 +53,6 @@ export default function TheDrawingCanvas() {
   useEffect(() => {
     if (!isTeacher) return;
     const canvas = canvasRef.current;
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
 
     socket.emit("setCanvasBounds", {
       height: canvas.height,
@@ -98,9 +96,20 @@ export default function TheDrawingCanvas() {
     canvas.addEventListener("mouseup", endPaintEvent);
   });
 
+
   return (
-    <div id="drawingCanvasContainer">
-      <canvas ref={canvasRef} id="drawingCanvas" />
+    <div id="drawingCanvasContainer" style={{
+      width: '100vw',
+      height: '100vh',
+      overflow: 'auto',
+      border: '1px solid'
+    }}>
+      <canvas
+        ref={canvasRef}
+        id="drawingCanvas"
+        width={window.innerWidth}
+        height={window.innerHeight}
+      />
       <TheDrawingCanvasPhoneOutline />
     </div>
   );
