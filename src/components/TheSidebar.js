@@ -4,19 +4,18 @@ import TheSidebarWidthSlider from "./TheSidebarWidthSlider";
 import TheSidebarImageSaver from "./TheSidebarImageSaver";
 import TheSidebarTitle from "./TheSidebarTitle";
 import TheSidebarRoomInformation from "./TheSidebarRoomInformation";
-import DarkMode from "./DarkModeToggle";
+import TheSidebarCanvasResizer from "./TheSidebarCanvasResizer";
 
 export default function TheSidebar() {
   return (
-    <div id="sidebar" style={{display: 'flex',background: 'var(--background2)', flexDirection: 'column', height: '100vh', color: 'var(--background)',}}>
+    <div id="sidebar" style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
       <TheSidebarTitle />
       <TheSidebarWidthSlider />
       <TheSidebarColorPicker />
       <TheSidebarImageSaver />
-      <DarkMode />
-
+      <TheSidebarCanvasResizer />
       <div style={{marginTop: 'auto'}}>
-        <TheSidebarRoomInformation/>
+        <TheSidebarRoomInformation />
       </div>
     </div>
   );
