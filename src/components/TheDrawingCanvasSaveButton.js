@@ -11,7 +11,7 @@ export default function TheDrawingCanvasSaveButton() {
     <Fab
       color="primary"
       style={{position: 'absolute', bottom: 20, right: 20}}
-      onPress={saveImage}
+      onClick={saveImage}
     >
       <SaveIcon />
     </Fab>
