@@ -29,7 +29,14 @@ const rooms = new Map();
 
 io.on("connection", (socket) => {
   socket.on('disconnect', () => {
-    const room = socketToRoom.get(getRoomId());
+    const room = rooms.get(getRoomId());
+    console.log('getRoomId()', getRoomId());
+    console.log('rooms.get(getRoomId())', rooms.get(getRoomId()))
+    
+    console.log('room', room);
+    console.log('room.teacher', room.teacher);
+    console.log('socket.id', socket.id);
+
     if (room && room.teacher === socket.id) {
       for (const socketId of room.students) {
         socket.to(socketId).emit('leaveRoom');
